@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 //mainwindow tianjiazhushi
+//提交之前，本地commmit 然后git bansh 打开 git push -f命令
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
