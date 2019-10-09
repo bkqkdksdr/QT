@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/html">
+        <file>html/LinkList.html</file>
+        <file>html/MyStack.html</file>
+        <file>html/MyQueue.HTML</file>
+        <file>html/MyCQueue.HTML</file>
+    </qresource>
+    <qresource prefix="/ico">
+        <file>resource/background.png</file>
+        <file>resource/exe.ico</file>
+        <file>resource/splash.png</file>
+    </qresource>
+    <qresource prefix="/tip">
+        <file>resource/clinklist.png</file>
+        <file>resource/dlinklist.png</file>
+        <file>resource/linklist.png</file>
+        <file>resource/mystack.PNG</file>
+        <file>resource/myqueue.PNG</file>
+        <file>resource/mycqueue.PNG</file>
+    </qresource>
+</RCC>
