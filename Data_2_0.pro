@@ -14,7 +14,10 @@ HEADERS += \
     uidefine.h \
     mystack.h \
     myqueue.h \
-    mycqueue.h
+    mycqueue.h \
+    bst.h \
+    treenode.h \
+    tree.h
 
 SOURCES += \
     newarrow.cpp \
@@ -24,14 +27,18 @@ SOURCES += \
     main.cpp \
     mystack.cpp \
     myqueue.cpp \
-    mycqueue.cpp
+    mycqueue.cpp \
+    bst.cpp \
+    treenode.cpp \
+    tree.cpp
 
 FORMS += \
     mainwindow.ui \
     linklist.ui \
     mystack.ui \
     myqueue.ui \
-    mycqueue.ui
+    mycqueue.ui \
+    bst.ui
 
 DISTFILES +=
 

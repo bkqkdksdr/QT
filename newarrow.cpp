@@ -12,25 +12,25 @@ NewArrow::NewArrow(int length, int dir, int size) : direction(dir), arrowsize(si
     case 0:
             p1=p2=endp=QPoint(0,-length);
             if(size)
-                p1+=QPoint(-SIZE1_HEIGHT,SIZE1_WEIGHT),p2+=QPoint(SIZE1_HEIGHT,SIZE1_WEIGHT);
+                p1+=QPoint(-SIZE1_HEIGHT,SIZE1_WEIGHT);p2+=QPoint(SIZE1_HEIGHT,SIZE1_WEIGHT);
             mygroundRect=QRect(-SIZE1_HEIGHT,-length,SIZE1_HEIGHT<<1,length);
             break;
         case 1:
             p1=p2=endp=QPoint(length,0);
             if(size)
-                p1+=QPoint(-SIZE1_WEIGHT,-SIZE1_HEIGHT),p2+=QPoint(-SIZE1_WEIGHT,SIZE1_HEIGHT);
+                p1+=QPoint(-SIZE1_WEIGHT,-SIZE1_HEIGHT);p2+=QPoint(-SIZE1_WEIGHT,SIZE1_HEIGHT);
             mygroundRect=QRect(0,-SIZE1_HEIGHT,length,SIZE1_HEIGHT<<1);
             break;
         case 2:
             p1=p2=endp=QPoint(0,length);
             if(size)
-                p1+=QPoint(-SIZE1_HEIGHT,-SIZE1_WEIGHT),p2+=QPoint(SIZE1_HEIGHT,-SIZE1_WEIGHT);
+                p1+=QPoint(-SIZE1_HEIGHT,-SIZE1_WEIGHT);p2+=QPoint(SIZE1_HEIGHT,-SIZE1_WEIGHT);
             mygroundRect=QRect(-SIZE1_HEIGHT,0,SIZE1_HEIGHT<<1,length);
             break;
         case 3:
             p1=p2=endp=QPoint(-length,0);
             if(size)
-                p1+=QPoint(SIZE1_WEIGHT,SIZE1_HEIGHT),p2+=QPoint(SIZE1_WEIGHT,-SIZE1_HEIGHT);
+                p1+=QPoint(SIZE1_WEIGHT,SIZE1_HEIGHT);p2+=QPoint(SIZE1_WEIGHT,-SIZE1_HEIGHT);
             mygroundRect=QRect(-length,-SIZE1_HEIGHT,length,SIZE1_HEIGHT<<1);
             break;
         default:
