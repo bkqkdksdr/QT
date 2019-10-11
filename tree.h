@@ -16,15 +16,20 @@ private:
 public:
     Tree();
     ~Tree();
-    bool isempty() const;
+    bool IsEmpty() const;
     Treenode<T>* Root();
-    void create();
+    void Create();
     void PerCreateTree(Treenode<T>* &root);
     void PerOrder();
     void InOrder();
     void PostOrder();
     void LevelOrder();
     void DeleteTree();
+    Treenode<T>* Find(T ele);
+    Treenode<T>* FindMax();
+    Treenode<T>* FindMin();
+    Treenode<T>* Insert(T ele, Treenode<T> *bst);
+    Treenode<T>* Delete(T ele, Treenode<T> *bst);
 };
 
 #endif // TREE_H

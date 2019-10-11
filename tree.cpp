@@ -1,6 +1,7 @@
 #include "tree.h"
+#include "treenode.h"
 template<class T>
-void visit(const T& value);
+void visit(const T& Value);
 //really
 template<class T>
 Tree<T>::Tree()
@@ -15,7 +16,7 @@ Tree<T>::~Tree()
 }
 
 template<class T>
-bool Tree<T>::isempty() const
+bool Tree<T>::IsEmpty() const
 {
     return (root != nullptr ? false : true);
 }
@@ -27,7 +28,7 @@ Treenode<T>* Tree<T>::Root()
 }
 
 template<class T>
-void Tree<T>::create()
+void Tree<T>::Create()
 {
     PerCreateTree(root);
 }
@@ -43,8 +44,8 @@ void Tree<T>::PerCreateTree(Treenode<T>* &root)
     {
         root = new Treenode<T>();
         root->setValue(item);
-        PerCreateTree(root->leftchild);
-        PerCreateTree(root->rightchild);
+        PerCreateTree(root->LeftChild);
+        PerCreateTree(root->RightChild);
     }
 }
 
@@ -53,7 +54,7 @@ void Tree<T>::PerOrder()
 {
     if (root != NULL)
     {
-        visit(root->value());
+        visit(root->Value());
         PreOrder(root->LeftChild());
         PreOrder(root->RightChild());
     }
@@ -65,7 +66,7 @@ void Tree<T>::InOrder()
     if (root != NULL)
     {
         InOrder(root->LeftChild());
-        visit(root->value());
+        visit(root->Value());
         InOrder(root->RightChild());
     }
 }
@@ -77,7 +78,7 @@ void Tree<T>::PostOrder()
     {
         PostOrder(root->LeftChild());
         PostOrder(root->RightChild());
-        visit(root->value());
+        visit(root->Value());
     }
 }
 
@@ -90,7 +91,7 @@ void Tree<T>::LevelOrder(){
     while(!aque.empty()){
         pointer =aque.front();
         aque.pop();
-        visit(pointer->value());
+        visit(pointer->Value());
         if(pointer->LeftChild() != NULL)
             aque.push(pointer->LeftChild());
         if(pointer->RightChild() != NULL)
@@ -100,13 +101,142 @@ void Tree<T>::LevelOrder(){
 
 template<class T>
 void Tree<T>::DeleteTree(){
-    if(root->leftchild != NULL){
-    DeleteBinaryTree(root->leftchild);
+    if(root->LeftChild() != NULL){
+    DeleteBinaryTree(root->LeftChild());
     }
-    if (root->rightchild != NULL)
+    if (root->RightChild() != NULL)
     {
-        DeleteBinaryTree(root->rightchild);
+        DeleteBinaryTree(root->RightChild());
     }
     delete root;
     root = NULL;
+}
+
+template<class T>
+Treenode<T>* Tree<T>::Find(T ele)
+{
+    Treenode<T> *bst = root;
+    while(bst)
+    {
+        if(ele > bst->Value())
+        {
+            //set 查找
+            //sleep
+            bst = bst->LeftChild();
+        }else if(ele < bst->Value())
+        {
+            //set 查找
+            //sleep
+            bst = bst->RightChild();
+        }else
+        {
+            //set 访问成功
+            return bst;
+            break;
+        }
+    }
+    return nullptr;
+}
+
+template<class T>
+Treenode<T>* Tree<T>::FindMax()
+{
+    Treenode<T> *bst = root;
+    if(bst)
+    {
+        while(bst->LeftChild())
+        {
+            //set 查找
+            //sleep
+            bst = bst->LeftChild();
+        }
+    }
+    //set 显示
+    return bst;
+}
+
+template<class T>
+Treenode<T>* Tree<T>::FindMin()
+{
+    Treenode<T> *bst = root;
+    if(bst)
+    {
+        while(bst->RightChild())
+        {
+            //set 查找
+            //sleep
+            bst = bst->RightChild();
+        }
+    }
+    //set 显示
+    return bst;
+}
+
+template<class T>
+Treenode<T>* Tree<T>::Insert(T ele, Treenode<T> *bst)
+{
+    if(bst)
+    {
+        bst = new Treenode<T>(ele);
+        //设置创建
+        //sleep
+    }else if(ele > bst->Value())
+    {
+        //set bst->right显示
+        //sleep
+        bst->SetRightChild(Insert(ele,bst->RightChild));
+    }else if(ele < bst->Value())
+    {
+        //set bst->left显示
+        //sleep
+        bst->SetLeftChild(Insert(ele,bst->LeftChild));
+    }
+    return bst;
+}
+
+template<class T>
+Treenode<T>* Tree<T>::Delete(T ele, Treenode<T> *bst)
+{
+    Treenode<T> *tp;
+    if(!bst)
+    {
+        //set 查找失败
+    }else if(ele < bst->Value())
+    {
+        //set 显示
+        //sleep
+        bst->SetLeftChild(Delete(ele, bst->LeftChild));
+    }else if(ele > bst->Value())
+    {
+        //set 显示
+        //sleep
+        bst->SetRightChild(Delete(ele,bst->RightChild);)
+    }else
+    {
+        //左右子都存在
+        if(bst->LeftChild() && bst->RightChild())
+        {
+            tp=FindMin(bst->RightChild());
+            //set 显示
+            //sleep
+            bst->setValue(tp->Value());
+            bst->SetRightChild(Delete(bst->Value(),bst->SetRightChild()));
+        }else
+        {
+            tp=bst;
+            if(!bst->LeftChild())
+            {
+                //set 显示
+                //sleep
+                bst=bst->RightChild();
+            }else if(!bst->RightChild())
+            {
+                //set 显示
+                //sleep
+                bst=bst->LeftChild();
+            }
+            delete tp;
+        }
+    }
+    return bst;
 }

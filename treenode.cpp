@@ -22,7 +22,7 @@ Treenode<T>::Treenode(const T& ele, Treenode<T> *l, Treenode<T> *r)
 }
 
 template<class T>
-T Treenode<T>::value() const
+T Treenode<T>::Value() const
 {
     return info;
 }
@@ -40,25 +40,25 @@ Treenode<T> * Treenode<T>::RightChild() const
 }
 
 template<class T>
-void Treenode<T>::setLeftChild(Treenode<T> *l)
+void Treenode<T>::SetLeftChild(Treenode<T> *l)
 {
     leftchild = l;
 }
 
 template<class T>
-void Treenode<T>::setRightChild(Treenode<T> *r)
+void Treenode<T>::SetRightChild(Treenode<T> *r)
 {
     rightchild = r;
 }
 
 template<class T>
-void Treenode<T>::setValue(const T& val)
+void Treenode<T>::SetValue(const T& val)
 {
     info = val;
 }
 
 template<class T>
-bool Treenode<T>::isleaf()
+bool Treenode<T>::IsLeaf()
 {
     if(leftchild == nullptr && rightchild == nullptr)return true;
     else return false;

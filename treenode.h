@@ -17,13 +17,13 @@ public:
     Treenode();
     Treenode(const T& ele);
     Treenode(const T& ele, Treenode<T> *l, Treenode<T> *r);
-    T value() const;
+    T Value() const;
     Treenode<T> * LeftChild() const;
     Treenode<T> * RightChild() const;
-    void setLeftChild(Treenode<T> *l);
-    void setRightChild(Treenode<T> *r);
-    void setValue(const T& val);
-    bool isleaf();
+    void SetLeftChild(Treenode<T> *l);
+    void SetRightChild(Treenode<T> *r);
+    void SetValue(const T& val);
+    bool IsLeaf();
 };
 
 #endif // TREENODE_H
