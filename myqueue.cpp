@@ -2,8 +2,8 @@
 #include <math.h>
 #include "myqueue.h"
 #include "ui_myqueue.h"
-#include "MyQueue.h"
-void sleep(unsigned int msec);
+#include "myqueue.h"
+void sleep(int msec);
 
 const QBrush MyQueue::normalBursh=QBrush(Qt::GlobalColor::darkGray);
 const QBrush MyQueue::visitedBrush=QBrush(Qt::GlobalColor::yellow);
@@ -50,6 +50,9 @@ void MyQueue::initTextBrowser(){
 //初始化UI控件
 void MyQueue::initUI()
 {
+    //设置图标
+    QIcon exeIcon(":/ico/resource/exe.ico");
+    this->setWindowIcon(exeIcon);
     //设置背景图片
     QPixmap background(":/ico/resource/background.png");
     QPalette palette;

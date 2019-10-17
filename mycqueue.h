@@ -49,7 +49,7 @@ private:
     NewArrow *frontArrow;
     NewArrow *rearArrow;
     int countNode;                                          //节点个数
-    unsigned int sleepTime;                                 //演示延时时间
+    int sleepTime;                                 //演示延时时间
     int size;
     int front;
     int tail;

@@ -210,7 +210,7 @@ Treenode<T>* Tree<T>::Delete(T ele, Treenode<T> *bst)
     {
         //set 显示
         //sleep
-        bst->SetRightChild(Delete(ele,bst->RightChild);)
+        bst->SetRightChild(Delete(ele,bst->RightChild));
     }else
     {
         //左右子都存在

@@ -2,8 +2,8 @@
 #include <math.h>
 #include "mystack.h"
 #include "ui_mystack.h"
-#include "MyStack.h"
-void sleep(unsigned int msec);
+#include "mystack.h"
+void sleep(int msec);
 
 const QBrush MyStack::normalBursh=QBrush(Qt::GlobalColor::darkGray);
 const QBrush MyStack::visitedBrush=QBrush(Qt::GlobalColor::yellow);
@@ -49,6 +49,9 @@ void MyStack::initTextBrowser(){
 //初始化UI控件
 void MyStack::initUI()
 {
+    //设置图标
+    QIcon exeIcon(":/ico/resource/exe.ico");
+    this->setWindowIcon(exeIcon);
     //设置背景图片
     QPixmap background(":/ico/resource/background.png");
     QPalette palette;
@@ -391,7 +394,7 @@ void MyStack::on_pushButtonLocate_clicked()
 //演示延迟调试
 void MyStack::on_horizontalSlider_valueChanged(int value)
 {
-    sleepTime=MAX_SLEEP_TIME/(value+1);
+    sleepTime=(unsigned int)MAX_SLEEP_TIME/(value+1);
 }
 //清除按钮
 void MyStack::on_pushButtonClear_clicked()

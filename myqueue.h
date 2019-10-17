@@ -45,7 +45,7 @@ private:
     LNode *head;                                            //头节点指针
     LNode *tail;                                            //尾节点指针
     int countNode;                                          //节点个数
-    unsigned int sleepTime;                                 //演示延时时间
+    int sleepTime;                                 //演示延时时间
 
     void initTextBrowser();                                 //初始化文本显示区
     void initUI();                                          //初始化UI控件

@@ -4,7 +4,7 @@
 #include "ui_linklist.h"
 #include "newarrow.h"
 //添加测试信息
-void sleep(unsigned int msec);
+void sleep(int msec);
 
 const QBrush LinkList::normalBursh=QBrush(Qt::GlobalColor::darkGray);
 const QBrush LinkList::visitedBrush=QBrush(Qt::GlobalColor::yellow);
@@ -54,6 +54,9 @@ void LinkList::initTextBrowser(){
 //初始化UI控件
 void LinkList::initUI()
 {
+    //设置图标
+    QIcon exeIcon(":/ico/resource/exe.ico");
+    this->setWindowIcon(exeIcon);
     //设置背景图片
     QPixmap background(":/ico/resource/background.png");
     QPalette palette;
