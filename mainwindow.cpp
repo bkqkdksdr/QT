@@ -31,6 +31,7 @@ void MainWindow::initUI()
     ui->pushButton2->setToolTip("<img src=':/tip/resource/mystack.PNG' /> ");
     ui->pushButton3->setToolTip("<img src=':/tip/resource/myqueue.PNG' /> ");
     ui->pushButton4->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
+    ui->pushButton5->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
 }
 
 void MainWindow::on_pushButton1_clicked()
@@ -51,4 +52,10 @@ void MainWindow::on_pushButton3_clicked()
 void MainWindow::on_pushButton4_clicked()
 {
     myCQueue.show();
+}
+
+
+void MainWindow::on_pushButton5_clicked()
+{
+    myBST.show();
 }

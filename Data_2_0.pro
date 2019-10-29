@@ -16,8 +16,10 @@ HEADERS += \
     myqueue.h \
     mycqueue.h \
     bst.h \
-    treenode.h \
-    tree.h
+    bbstree.h \
+    node.h \
+    edge.h \
+    graphwidget.h
 
 SOURCES += \
     newarrow.cpp \
@@ -29,8 +31,10 @@ SOURCES += \
     myqueue.cpp \
     mycqueue.cpp \
     bst.cpp \
-    treenode.cpp \
-    tree.cpp
+    bbstree.cpp \
+    node.cpp \
+    edge.cpp \
+    graphwidget.cpp
 
 FORMS += \
     mainwindow.ui \

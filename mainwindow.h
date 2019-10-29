@@ -11,6 +11,7 @@
 #include "mystack.h"
 #include "myqueue.h"
 #include "mycqueue.h"
+#include "bst.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,12 +34,15 @@ private slots:
 
     void on_pushButton4_clicked();
 
+    void on_pushButton5_clicked();
+
 private:
     Ui::MainWindow *ui;
     LinkList linkList;
     MyStack myStack;
     MyQueue myQueue;
     MyCQueue myCQueue;
+    BST myBST;
     void initUI();
 };
 

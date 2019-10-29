@@ -12,6 +12,7 @@ class LinkList;
 class MyStack;
 class MyQueue;
 class MyCQueue;
+class BST;
 
 class LNode
 {
@@ -39,6 +40,7 @@ public:
     friend class MyStack;
     friend class MyQueue;
     friend class MyCQueue;
+    friend class BST;
 };
 
 #endif // LNODE_H
