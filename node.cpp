@@ -169,9 +169,8 @@ QPainterPath Node::shape() const
 //! [10]
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
-    painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::darkGray);
-    painter->drawEllipse(-7, -7, 20, 20);
+
+
     QRadialGradient gradient(-3, -3, 10);
     if (option->state & QStyle::State_Sunken) {
         gradient.setCenter(3, 3);
@@ -212,12 +211,12 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->drawEllipse(-10, -10, 20, 20);
 
 
-    QRectF textRect(-10,-10,20,20);
+    QRectF textRect(-10, -10, 20, 20);
     QString message(QString::number(this->node->data));
 
     QFont font = painter->font();
     font.setBold(true);
-    font.setPointSize(14);
+    font.setPointSize(7);
     painter->setFont(font);
     if(isSearched){
         painter->setPen(Qt::white);

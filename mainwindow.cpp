@@ -31,7 +31,7 @@ void MainWindow::initUI()
     ui->pushButton2->setToolTip("<img src=':/tip/resource/mystack.PNG' /> ");
     ui->pushButton3->setToolTip("<img src=':/tip/resource/myqueue.PNG' /> ");
     ui->pushButton4->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
-    ui->pushButton5->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
+    ui->pushButton5->setToolTip("<img src=':/tip/resource/mybst.png' /> ");
 }
 
 void MainWindow::on_pushButton1_clicked()

@@ -17,5 +17,6 @@
         <file>resource/mystack.PNG</file>
         <file>resource/myqueue.PNG</file>
         <file>resource/mycqueue.PNG</file>
+        <file>resource/mybst.png</file>
     </qresource>
 </RCC>

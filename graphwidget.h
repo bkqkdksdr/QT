@@ -62,7 +62,7 @@ class GraphWidget : public QGraphicsView
     Q_OBJECT
 
 public:
-    GraphWidget(QWidget *parent = 0);
+    GraphWidget(QWidget *parent = 0, QGraphicsScene *scene = 0);
     BBSTree root;
     std::vector<BBSTree> trees;
 

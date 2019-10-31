@@ -51,12 +51,8 @@ private slots:
 
 private:
     Ui::BST *ui;
-    QGraphicsScene *scene;
+    QGraphicsScene *scene2;
     GraphWidget *widget;
-    QGraphicsTextItem *headLabel;//链表符号指针
-    NewArrow *headArrow;//符号箭头指针
-    LNode *head;//头节点指针
-    int countNode;//节点个数
     int sleepTime;//演示延时时间
 
     void initTextBrowser();//初始化文本显示区
