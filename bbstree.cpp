@@ -2,7 +2,6 @@
 
 #include <cstdio>
 #include <cstdlib>
-
 //中序遍历
 void InOrderTraverse(BBSTree T)
 {

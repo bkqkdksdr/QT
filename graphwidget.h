@@ -65,7 +65,6 @@ public:
     GraphWidget(QWidget *parent = 0, QGraphicsScene *scene = 0);
     BBSTree root;
     std::vector<BBSTree> trees;
-
     void itemMoved();
     void drawTree();
     void paintTree(Node* &root,qreal &centerX,qreal centerY,QGraphicsScene *scene);
@@ -79,6 +78,7 @@ public slots:
     void searchNode();
     void divTree();
     void mergerTree();
+    void destoryTree();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

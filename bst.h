@@ -27,16 +27,6 @@ public:
 private slots:
     void on_pushButtonInit_clicked();
 
-    void on_pushButtonInsert_clicked();
-
-    void on_pushButtonClear_clicked();
-
-    void on_pushButtonRandomInsert5_clicked();
-
-    void on_pushButtonDelete_clicked();
-
-    void on_pushButtonLocate_clicked();
-
     void on_horizontalSlider_valueChanged(int value);
 
     void on_addNode_clicked();
@@ -61,16 +51,10 @@ private:
     void adjustController();//操作之后调整右侧输入
 
     QPoint getLNodePos(int nodeNumber);
-    void addLNodeGraphicsItem(LNode *pl, QPoint coord);
-    void adjustLNodeArrow(LNode *pLNode, int nodeNumber);
-    void adjustLNodePos(LNode *pLNode, QPoint coord);
     void setBSTNormalBrush();
     void closeEvent(QCloseEvent *event);
 
     void initBST();
-    void insertLNode(int pos, QString elem);
-    void deleteLNode(int pos, QString &elem);
-    bool locateLNode(int &pos,QString elem);
     void destorySelf();
 
 

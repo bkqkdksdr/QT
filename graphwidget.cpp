@@ -63,6 +63,7 @@
 #include <QFormLayout>
 
 //! [0]
+void sleep(int msec);
 
 GraphWidget::GraphWidget(QWidget *parent, QGraphicsScene *scene)
     : QGraphicsView(parent), timerId(0)
@@ -84,6 +85,7 @@ GraphWidget::GraphWidget(QWidget *parent, QGraphicsScene *scene)
 //! [1]
 
 void GraphWidget::addNode(){
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     bool flag = false;
     int number = 0;
     if(trees.size()>1){
@@ -109,6 +111,7 @@ void GraphWidget::addNode(){
 }
 
 void GraphWidget::deleteNode(){
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     int number = 0;
     bool flag = false;
     if(trees.size()>1){
@@ -130,6 +133,7 @@ void GraphWidget::deleteNode(){
 }
 
 void GraphWidget::searchNode(){
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     bool flag = false;
     int input = QInputDialog::getInt(NULL,tr("搜索数字"),tr("请输入0-99的数字"),std::rand()%100,0,100,2,&flag);
     if(!flag){
@@ -157,6 +161,7 @@ void GraphWidget::searchNode(){
 }
 
 void GraphWidget::divTree(){
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     int number = 0;
     bool flag = false;
     if(trees.size()>1){
@@ -210,7 +215,15 @@ void GraphWidget::mergerTree(){
         drawTree();
     }
 }
-
+void GraphWidget::destoryTree(){
+    foreach(BBSTree t, trees)
+    {
+        DestroyBBST(t);
+        drawTree();
+        sleep(5000);
+    }
+    //trees.clear();
+}
 //! [2]
 void GraphWidget::itemMoved()
 {
@@ -371,9 +384,9 @@ void GraphWidget::shuffle()
 {
     foreach (QGraphicsItem *item, scene()->items()) {
         qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
-        if (qgraphicsitem_cast<Node *>(item))
+         if (qgraphicsitem_cast<Node *>(item))
             //item->setPos(-150 + QRandomGenerator::global()->bounded(300), -150 + QRandomGenerator::global()->bounded(300));
-            item->setPos(-150 + qrand()%300, -150 + qrand()%300);
+            item->setPos(-150 + rand()%300, -150 + rand()%300);
     }
 }
 

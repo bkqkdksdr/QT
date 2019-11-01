@@ -89,235 +89,26 @@ void BST::initSceneView()
 }
 //操作之后调整右侧输入和显示控件
 void BST::adjustController()
-{/*
-    //节点个数可能会改变，需要考虑一些操作的合理性
-    ui->pushButtonDelete->setEnabled(countNode);
-    ui->comboBoxDelete->setEnabled(countNode);
+{
 
-    if(ui->comboBoxDelete->count()!=countNode)
-    {
-        QStringList qStringList;
-        for(int i=1;i<=countNode;++i)
-            qStringList.push_back(QString::number(i));
-
-        ui->comboBoxInsert->clear();
-        ui->comboBoxInsert->addItems(qStringList);
-
-        ui->comboBoxDelete->clear();
-        ui->comboBoxDelete->addItems(qStringList);
-    }
-    if(ui->comboBoxInsert->count()!=countNode+1)
-        ui->comboBoxInsert->addItem(QString::number(countNode+1));
-
-    ui->comboBoxLocate->clear();*/
 }
-//计算节点的SCENE坐标
-QPoint BST::getLNodePos(int nodeNumber)
-{/*
-    const static int rowN=SCENE_MAX_W/NODE_W;
-    qDebug()<<rowN<<"getposx="<<(nodeNumber+1)%rowN*NODE_W<<" y="<<(nodeNumber+1)%rowN*NODE_H<<"\n";
-    return QPoint((nodeNumber+1)%rowN*NODE_W,(nodeNumber+1)/rowN*NODE_H);*/
-}
-//添加节点的GraphicsItem
-void BST::addLNodeGraphicsItem(LNode *pl, QPoint coord)
-{/*
-    int x=coord.x(), y=coord.y();
-    qDebug()<<"x="<<x<<"y="<<y<<"\n";//将信息输出到控制台
-    pl->valueRect    =scene->addRect(x,y+SPACING,VALUE_RECT_W,RECT_H,QPen(),BST::markBrush);
-    pl->pointerRect  =scene->addRect(x+VALUE_RECT_W,y+SPACING,POINTER_RECT_W,RECT_H);
-    pl->valueText    =scene->addText(pl->data,BST::dataFont);
-    pl->valueText->setPos(x,y+SPACING+5);
-    if(pl->next==nullptr)
-    {
-        pl->pointerText=scene->addText(" ^",BST::dataFont);
-        pl->pointerText->setPos(x+VALUE_RECT_W, y+SPACING+5);
-    }*/
-}
-//调整节点的箭头
-void BST::adjustLNodeArrow(LNode *pLNode, int nodeNumber)
-{/*
-    for(auto &a:pLNode->arrowVector)
-        scene->removeItem(a);
-    if(pLNode->next==nullptr)
-        return ;
 
-    QPoint myCoord=getLNodePos(nodeNumber);
-    QPoint nextCoord=getLNodePos(nodeNumber+1);
-
-    NewArrow *pArrow;
-    if(myCoord.y()==nextCoord.y())
-    {
-        //节点不是最后一行节点
-        pArrow=new NewArrow(ARROW_LEN);
-        scene->addItem(pArrow);
-        pArrow->setPos(myCoord.x()+ARROW_H_OFFSET,myCoord.y()+ARROW_V_OFFSET);
-        pLNode->arrowVector.push_back(pArrow);
-    }
-    else {
-        //节点是一行中最后的节点
-        QPoint point1(myCoord.x()+ARROW_H_OFFSET,myCoord.y()+ARROW_V_OFFSET);
-        QPoint point2(point1.x(),point1.y()+NODE_H/2);
-        QPoint point3(VALUE_RECT_W>>1,point2.y());
-
-        pArrow=new NewArrow(NODE_H>>1,2,0);
-        scene->addItem(pArrow);
-        pArrow->setPos(point1);
-        pLNode->arrowVector.push_back(pArrow);
-
-        pArrow=new NewArrow(point2.x()-point3.x(),3,0);
-        scene->addItem(pArrow);
-        pArrow->setPos(point2);
-        pLNode->arrowVector.push_back(pArrow);
-
-        pArrow=new NewArrow(SPACING,2);
-        scene->addItem(pArrow);
-        pArrow->setPos(point3);
-        pLNode->arrowVector.push_back(pArrow);
-    }*/
-}
-//调整节点scene坐标
-void BST::adjustLNodePos(LNode *pLNode, QPoint coord)
-{/*
-    int x=coord.x(), y=coord.y();
-    pLNode->valueRect->setRect(x,y+SPACING,VALUE_RECT_W,RECT_H);
-    pLNode->pointerRect->setRect(x+VALUE_RECT_W,y+SPACING,POINTER_RECT_W,RECT_H);
-    pLNode->valueText->setPos(x,y+SPACING+5);
-    if(pLNode->pointerText)
-        pLNode->pointerText->setPos(x+VALUE_RECT_W, y+SPACING+5);*/
-}
 //设置链表所有节点显示模式
 void BST::setBSTNormalBrush()
-{/*
-    for(LNode *pLNode=head;pLNode;pLNode=pLNode->next)
-        pLNode->setNodeStatus(BST::normalBursh);*/
+{
+
 }
 //创建链表初始化
 void BST::initBST()
 {
     initSceneView();
-   /* sleep(sleepTime);
-    head=new LNode("头节点",nullptr);
-    addLNodeGraphicsItem(head, getLNodePos(0));*/
 }
 //插入节点到链表
-void BST::insertLNode(int pos, QString elem)
-{/*
-    LNode *pInsertNode=nullptr;
-    LNode *pLNode=head;
 
-    head->setNodeStatus(BST::visitedBrush);
-
-    //找到前驱结点指针
-    for(int i=0;i<pos-1;++i)
-    {
-        sleep(sleepTime);
-
-        pLNode=pLNode->next;
-        pLNode->setNodeStatus(BST::visitedBrush);
-    }
-    sleep(sleepTime);
-    if(pLNode->next==nullptr)
-    {
-        scene->removeItem(pLNode->pointerText);
-        pLNode->pointerText=nullptr;
-    }
-    //新节点插入到链表中
-    pInsertNode=new LNode(elem,pLNode->next);
-    pLNode->next=pInsertNode;
-    ++countNode;
-    //添加图形item
-    addLNodeGraphicsItem(pInsertNode,getLNodePos(pos));
-
-    for(--pos;pos<=countNode;++pos)
-    {
-        sleep(sleepTime);
-
-        adjustLNodePos(pLNode,getLNodePos(pos));
-        adjustLNodeArrow(pLNode,pos);
-        pLNode=pLNode->next;
-    }*/
-}
-//删除链表节点
-void BST::deleteLNode(int pos, QString &elem)
-{/*
-    LNode *pDeleteNode=nullptr;
-    LNode *pLNode=head;
-
-    head->setNodeStatus(BST::visitedBrush);
-
-    //找到前驱结点
-    for(int i=0;i<pos-1;++i)
-    {
-        sleep(sleepTime);
-
-        pLNode=pLNode->next;
-        pLNode->setNodeStatus(BST::visitedBrush);
-    }
-    sleep(sleepTime);
-    pDeleteNode=pLNode->next;
-    pLNode->next=pDeleteNode->next;
-    elem=pDeleteNode->data;
-    //删除节点，移出图形item
-    pDeleteNode->removeAll(scene);
-    delete pDeleteNode;
-    --countNode;
-
-    if(pLNode->next==nullptr)
-    {
-        QPoint coord=getLNodePos(pos-1);
-        pLNode->pointerText=scene->addText(" ^",BST::dataFont);
-        pLNode->pointerText->setPos(coord.x()+VALUE_RECT_W, coord.y()+SPACING+5);
-    }
-
-    for(--pos;pos<=countNode;++pos)
-    {
-        sleep(sleepTime);
-
-        adjustLNodePos(pLNode,getLNodePos(pos));
-        adjustLNodeArrow(pLNode,pos);
-        pLNode=pLNode->next;
-    }*/
-}
-//查找链表节点
-bool BST::locateLNode(int &pos, QString elem)
-{/*
-    LNode *pLNode=head;
-    head->setNodeStatus(BST::visitedBrush);
-    for(pos=1;pLNode&&pLNode->next&&pLNode->next->data!=elem;++pos)
-    {
-        sleep(sleepTime);
-        pLNode=pLNode->next;
-        pLNode->setNodeStatus(BST::visitedBrush);
-    }
-    sleep(sleepTime);
-    //找到相应的节点
-    if(pLNode&&pLNode->next){
-        pLNode->next->setNodeStatus(BST::markBrush);
-        return true;
-    }
-    return false;*/
-}
 //释放申请的内存空间
 void BST::destorySelf()
-{/*
-    if(scene==nullptr)
-        return ;
-    LNode *pLNode=head, *qLNode;
-    for(;pLNode;pLNode=qLNode)
-    {
-        sleep(sleepTime);
-        qLNode=pLNode->next;
-        pLNode->removeAll(scene);
-        delete pLNode;
-    }
-    sleep(sleepTime);
-    scene->removeItem(headLabel);
-    scene->removeItem(headArrow);
-    delete headLabel;
-    delete headArrow;
-    scene=nullptr;
-
-    countNode=0;*/
+{
+    //widget->destoryTree();
 }
 //槽函数：点击创建
 void BST::on_pushButtonInit_clicked()
@@ -331,96 +122,12 @@ void BST::on_pushButtonInit_clicked()
     adjustController();
 }
 
-void BST::on_pushButtonInsert_clicked()
-{/*
-    setBSTNormalBrush();
-    sleep(sleepTime);
-    QString edit=ui->lineEditInsert->text();
-    //若无输入或未输入
-    if(edit.isEmpty())
-    {
-        ui->lineEditState->setPalette(Qt::GlobalColor::red);
-        ui->lineEditState->setText("Please Input!");
-        return ;
-    }
-
-    insertLNode(ui->comboBoxInsert->currentText().toInt(),edit);
-    //调整右侧控件状态及值
-    adjustController();
-    ui->lineEditState->setPalette(Qt::GlobalColor::green);
-    ui->lineEditState->setText("Insert Success!");*/
-}
-
-void BST::on_pushButtonClear_clicked()
-{/*
-    destorySelf();
-    initUI();*/
-}
 
 void BST::closeEvent(QCloseEvent *event)
-{/*
+{
     destorySelf();
-    //initUI();*/
+    //initUI();
 }
-void BST::on_pushButtonRandomInsert5_clicked()
-{/*
-    for(int i=0;i<5;i++)
-    {
-        setBSTNormalBrush();
-        sleep(sleepTime);
-        insertLNode(countNode+1,QString::number(rand()%999999999));
-        adjustController();
-        ui->lineEditState->setPalette(Qt::GlobalColor::green);
-        ui->lineEditState->setText("Insert Success!");
-    }*/
-}
-
-void BST::on_pushButtonDelete_clicked()
-{/*
-    setBSTNormalBrush();
-    sleep(sleepTime);
-    QString deleteData;
-    deleteLNode(ui->comboBoxDelete->currentText().toInt(),deleteData);
-    //调整右侧控件状态及值
-    adjustController();
-    //ui->lineEditDelete->setText(deleteData);
-    ui->lineEditState->setPalette(Qt::GlobalColor::green);
-    ui->lineEditState->setText("Delete Success!");*/
-}
-
-
-void BST::on_pushButtonLocate_clicked()
-{/*
-    setBSTNormalBrush();
-    sleep(sleepTime);
-    QString edit=ui->lineEditLocate->text();
-
-    //若输入无效或未输入
-    if(edit.isEmpty())
-    {
-        adjustController();
-        ui->lineEditState->setPalette(Qt::GlobalColor::red);
-        ui->lineEditState->setText("Please Input!");
-        return;
-    }
-
-    //根据查找结果给出结果输出
-    int pos;
-    if(locateLNode(pos,edit))
-    {
-        ui->comboBoxLocate->addItem(QString::number(pos));
-        ui->comboBoxLocate->setCurrentText(QString::number(pos));
-        ui->lineEditState->setPalette(Qt::GlobalColor::green);
-        ui->lineEditState->setText("Locate Success!");
-    }
-    else
-    {
-        adjustController();
-        ui->lineEditState->setPalette(Qt::GlobalColor::red);
-        ui->lineEditState->setText("Locate Fail!");
-    }*/
-}
-
 
 void BST::on_horizontalSlider_valueChanged(int value)
 {
