@@ -19,7 +19,11 @@ HEADERS += \
     bbstree.h \
     node.h \
     edge.h \
-    graphwidget.h
+    graphwidget.h \
+    avltree.h \
+    newedge.h \
+    newnode.h \
+    myavltree.h
 
 SOURCES += \
     newarrow.cpp \
@@ -34,7 +38,11 @@ SOURCES += \
     bbstree.cpp \
     node.cpp \
     edge.cpp \
-    graphwidget.cpp
+    graphwidget.cpp \
+    avltree.cpp \
+    newedge.cpp \
+    newnode.cpp \
+    myavltree.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -42,7 +50,8 @@ FORMS += \
     mystack.ui \
     myqueue.ui \
     mycqueue.ui \
-    bst.ui
+    bst.ui \
+    myavltree.ui
 
 DISTFILES +=
 

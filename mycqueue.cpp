@@ -1,6 +1,6 @@
 #include <QDebug>
 #include <math.h>
-#include "MyCQueue.h"
+#include "mycqueue.h"
 #include "ui_mycqueue.h"
 #include "mycqueue.h"
 void sleep(int msec);
