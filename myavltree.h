@@ -48,16 +48,42 @@ private slots:
 
     void on_addNode_clicked();
 
+    void on_deleteNode_clicked();
+
+    void on_searchNode_clicked();
+
+    void on_addNode5_clicked();
+
+    void on_horizontalSlider_valueChanged(int value);
+
+    void on_pushButtonclear_clicked();
+
+    void on_PreOrder_clicked();
+
+    void on_InOrder_clicked();
+
+    void on_LastOrder_clicked();
+
 private:
     Ui::MyAVLTree *ui;
     QGraphicsScene *scene;
     int timerId;
-    void EmptyNodeAndEdge();
+    int sleepTime;
+    int de;
+    void EmptyNodeAndEdge(int state);
     void initTextBrowser();
     void initUI();
     void initSceneView();
     void initMyAVLTree();
     void destorySelf();
+    void adjustContronller();
+    void closeEvent(QCloseEvent *event);
+    void count(AVLTree &T, int &numbers);
+    void PreOrder(AVLTree T);
+    void InOrder(AVLTree T);
+    void LastOrder(AVLTree T);
+    void Setvisited(AVLTree T);
+    void RefleshNode();
 
 private:
     //设置显示模式、正常、遍历、选中、删除

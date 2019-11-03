@@ -11,7 +11,6 @@
 #include "mystack.h"
 #include "myqueue.h"
 #include "mycqueue.h"
-//#include "bst.h"
 #include "myavltree.h"
 
 namespace Ui {
@@ -43,7 +42,6 @@ private:
     MyStack myStack;
     MyQueue myQueue;
     MyCQueue myCQueue;
-    //BST myBST;
     MyAVLTree myAVLTree;
     void initUI();
 };

@@ -10,6 +10,7 @@ void InOrderTraverse(AVLTree T)
     printf("%d",T->data);
     InOrderTraverse(T->rchild);
 }
+
 //左旋转
 void L_rotation(AVLTree &T)
 {
@@ -323,7 +324,11 @@ int GetDepth(AVLTree T)
     if (nullptr == T)return 0;
     return max(GetDepth(T->lchild),GetDepth(T->rchild))+1;
 }
-
+int max(int a, int b)
+{
+   if(a>b) return a;
+   else return b;
+}
 Status isBalanced(AVLTree T)
 {
     if(nullptr == T) return YES;

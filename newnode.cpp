@@ -106,16 +106,16 @@ void NewNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         switch(node->bf)
         {
         case EH:
-            gradient.setColorAt(1, QColor(Qt::blue).light(120));
-            gradient.setColorAt(0, QColor(Qt::darkBlue).light(120));
+            gradient.setColorAt(1, QColor(Qt::white).light(120));
+            gradient.setColorAt(0, QColor(Qt::white).light(120));
             break;
         case LH:
-            gradient.setColorAt(1, QColor(Qt::yellow).light(120));
-            gradient.setColorAt(0, QColor(Qt::darkYellow).light(120));
+            gradient.setColorAt(1, QColor(Qt::white).light(120));
+            gradient.setColorAt(0, QColor(Qt::white).light(120));
             break;
         case RH:
-            gradient.setColorAt(1, QColor(Qt::red).light(120));
-            gradient.setColorAt(0, QColor(Qt::darkRed).light(120));
+            gradient.setColorAt(1, QColor(Qt::white).light(120));
+            gradient.setColorAt(0, QColor(Qt::white).light(120));
             break;
         }
     }else
@@ -123,16 +123,16 @@ void NewNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         switch (node->bf)
         {
         case EH:
-            gradient.setColorAt(1, Qt::blue);
-            gradient.setColorAt(0, Qt::darkBlue);
+            gradient.setColorAt(1, Qt::white);
+            gradient.setColorAt(0, Qt::white);
             break;
         case LH:
-            gradient.setColorAt(1, Qt::yellow);
-            gradient.setColorAt(0, Qt::darkYellow);
+            gradient.setColorAt(1, Qt::white);
+            gradient.setColorAt(0, Qt::white);
             break;
         case RH:
-            gradient.setColorAt(1, Qt::red);
-            gradient.setColorAt(0, Qt::darkRed);
+            gradient.setColorAt(1, Qt::white);
+            gradient.setColorAt(0, Qt::white);
             break;
         }
     }
@@ -148,9 +148,12 @@ void NewNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     font.setBold(true);
     font.setPointSize(7);
     painter->setFont(font);
-    if(isSearched)
+    if(isSearched || isVisited)
     {
-        painter->setPen(Qt::white);
+        if(isSearched)
+            painter->setPen(Qt::blue);
+        if(isVisited)
+            painter->setPen(Qt::yellow);
     }else
     {
         painter->setPen(Qt::black);

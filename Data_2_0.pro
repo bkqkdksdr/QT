@@ -15,11 +15,6 @@ HEADERS += \
     mystack.h \
     myqueue.h \
     mycqueue.h \
-    bst.h \
-    bbstree.h \
-    node.h \
-    edge.h \
-    graphwidget.h \
     avltree.h \
     newedge.h \
     newnode.h \
@@ -34,11 +29,6 @@ SOURCES += \
     mystack.cpp \
     myqueue.cpp \
     mycqueue.cpp \
-    bst.cpp \
-    bbstree.cpp \
-    node.cpp \
-    edge.cpp \
-    graphwidget.cpp \
     avltree.cpp \
     newedge.cpp \
     newnode.cpp \
@@ -50,7 +40,6 @@ FORMS += \
     mystack.ui \
     myqueue.ui \
     mycqueue.ui \
-    bst.ui \
     myavltree.ui
 
 DISTFILES +=

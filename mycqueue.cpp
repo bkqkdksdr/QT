@@ -238,8 +238,7 @@ void MyCQueue::adjustArrow()
     rearArrow->setPos(rpoint);
 }
 //调整节点scene坐标
-void MyCQueue::
-adjustLabel()
+void MyCQueue::adjustLabel()
 {
     int n=front/3;
     QPoint fpoint = getLNodePos(front);

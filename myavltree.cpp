@@ -13,6 +13,8 @@
 #include <QDialogButtonBox>
 #include <QGraphicsView>
 #include <QFormLayout>
+#include <QDebug>
+void sleep(int msec);
 
 const QBrush MyAVLTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
 const QBrush MyAVLTree::visitedBrush=QBrush(Qt::GlobalColor::yellow);
@@ -25,18 +27,19 @@ const QIntValidator MyAVLTree::dataValidator(-999999999,999999999);
 
 MyAVLTree::MyAVLTree(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MyAVLTree),
-    timerId(0)
+    ui(new Ui::MyAVLTree)
 {
     ui->setupUi(this);
     initTextBrowser();
     initUI();
 
+    timerId = 0;
     scene = nullptr;
+    sleepTime=MAX_SLEEP_TIME>>1;
     ui->horizontalSlider->setValue(MAX_SLIDER>>1);
     srand(time_t(nullptr));
 
-    this->setWindowTitle("avl");
+    this->setWindowTitle("AVL树");
 }
 
 MyAVLTree::~MyAVLTree()
@@ -45,7 +48,7 @@ MyAVLTree::~MyAVLTree()
 }
 //初始化文本显示区
 void MyAVLTree::initTextBrowser(){
-    QFile file(":/html/html/LinkList.html");
+    QFile file(":/html/html/MyAVLTree.html");
     file.open(QIODevice::ReadOnly);
     QString htmlString=file.readAll();
     ui->textBrowser->setHtml(htmlString);
@@ -64,6 +67,23 @@ void MyAVLTree::initUI()
     palette.setBrush(QPalette::Background,background);
     this->setPalette(palette);
     //未创建时，除创建按钮外一律无效
+
+    ui->addNode->setEnabled(false);
+    ui->deleteNode->setEnabled(false);
+    ui->searchNode->setEnabled(false);
+    ui->addNode5->setEnabled(false);
+    ui->pushButtonclear->setEnabled(false);
+    ui->InOrder->setEnabled(false);
+    ui->PreOrder->setEnabled(false);
+    ui->LastOrder->setEnabled(false);
+
+    ui->lineEditState->setEnabled(false);
+    ui->lineEditState->setFont(dataFont);
+    ui->lineEditState->setText("请选择创建");
+
+    ui->lineCount->setEnabled(false);
+    ui->lineCount->setFont(dataFont);
+    ui->lineCount->setText("0");
 
     ui->horizontalSlider->setMinimum(0);
     ui->horizontalSlider->setMaximum(MAX_SLIDER);
@@ -89,11 +109,113 @@ void MyAVLTree::initMyAVLTree()
 
 void MyAVLTree::destorySelf()
 {
-    //widget->destoryTree();
+    if(trees.size())
+    {
+        trees.clear();
+        EmptyNodeAndEdge(1);
+    }
+    adjustContronller();
+}
+
+void MyAVLTree::adjustContronller()
+{
+    if(!trees.size())
+    {
+        ui->pushButtonclear->setEnabled(false);
+        ui->InOrder->setEnabled(false);
+        ui->PreOrder->setEnabled(false);
+        ui->LastOrder->setEnabled(false);
+        ui->deleteNode->setEnabled(false);
+        ui->searchNode->setEnabled(false);
+    }else
+    {
+        int numbers = 0;
+        count(trees.at(0),numbers);
+        ui->lineCount->setText(QString::number(numbers));
+        if(numbers)
+        {
+            ui->pushButtonclear->setEnabled(true);
+            ui->InOrder->setEnabled(true);
+            ui->PreOrder->setEnabled(true);
+            ui->LastOrder->setEnabled(true);
+            ui->addNode->setEnabled(true);
+            ui->addNode5->setEnabled(true);
+            ui->deleteNode->setEnabled(true);
+            ui->searchNode->setEnabled(true);
+        }else
+        {
+            ui->pushButtonclear->setEnabled(false);
+            ui->InOrder->setEnabled(false);
+            ui->PreOrder->setEnabled(false);
+            ui->LastOrder->setEnabled(false);
+            ui->deleteNode->setEnabled(false);
+            ui->searchNode->setEnabled(false);
+        }
+    }
+}
+void MyAVLTree::count(AVLTree &T, int &numbers)
+{
+    if(nullptr == T) return;
+    count(T->lchild,numbers);
+    numbers++;
+    count(T->rchild,numbers);
+}
+void MyAVLTree::PreOrder(AVLTree T)
+{
+    sleep(sleepTime);
+    if(nullptr == T) return;
+    Setvisited(T);
+    PreOrder(T->lchild);
+    PreOrder(T->rchild);
+}
+void MyAVLTree::InOrder(AVLTree T)
+{
+    sleep(sleepTime);
+    if(nullptr == T) return;
+    InOrder(T->lchild);
+    Setvisited(T);
+    InOrder(T->rchild);
+}
+void MyAVLTree::LastOrder(AVLTree T)
+{
+    sleep(sleepTime);
+    if(nullptr == T) return;
+    LastOrder(T->lchild);
+    LastOrder(T->rchild);
+    Setvisited(T);
+}
+void MyAVLTree::Setvisited(AVLTree T)
+{
+    std::vector<AVLTree> result;
+    foreach (AVLTree t, trees) {
+        AVLTree s;
+        s = SearchAVL(t,T->data);
+        if(nullptr!=s)result.push_back(s);
+    }
+    //更新点
+    QList<NewNode *> nodes;
+    foreach (QGraphicsItem *item, scene->items()) {
+        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        {
+            node->isVisited=std::find(result.begin(),result.end(),node->node)!=result.end();
+            node->update();
+        }
+    }
 }
 void MyAVLTree::on_pushButtonInit_clicked()
 {
+    destorySelf();
     initMyAVLTree();
+
+    ui->addNode->setEnabled(true);
+    ui->deleteNode->setEnabled(true);
+    ui->searchNode->setEnabled(true);
+    ui->addNode5->setEnabled(true);
+    ui->pushButtonclear->setEnabled(true);
+
+    adjustContronller();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Create Success");
 }
 
 void MyAVLTree::on_addNode_clicked()
@@ -121,10 +243,13 @@ void MyAVLTree::on_addNode_clicked()
     Status s;
     if(InsertAVL(trees.at(number),input, s) == NO)
     {
-        QMessageBox::about(nullptr,tr("提醒"),tr("该数字已经存在"));
+        ui->lineEditState->setPalette(Qt::GlobalColor::red);
+        ui->lineEditState->setText("该数字已经存在");
         return ;
     }
     drawTree();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Insert Success");
 }
 
 void MyAVLTree::itemMoved()
@@ -133,7 +258,7 @@ void MyAVLTree::itemMoved()
         timerId = startTimer(1000 / 25);
 }
 
-void MyAVLTree::EmptyNodeAndEdge()
+void MyAVLTree::EmptyNodeAndEdge(int state)
 {
     QList<NewNode *> nodes;
     foreach(QGraphicsItem *item, scene->items())
@@ -142,11 +267,12 @@ void MyAVLTree::EmptyNodeAndEdge()
             scene->removeItem(node);
         if(NewEdge *edge = qgraphicsitem_cast<NewEdge *>(item))
             scene->removeItem(edge);
+        if(state)sleep(sleepTime);
     }
 }
 void MyAVLTree::drawTree()
 {
-    EmptyNodeAndEdge();
+    EmptyNodeAndEdge(0);
     qreal x = 20;
     int depth = 0;
     foreach(AVLTree t,trees)
@@ -157,6 +283,7 @@ void MyAVLTree::drawTree()
         paintTree(n, x, 20);
     }
     scene->setSceneRect(0, 0, x-20, 40*depth);
+    adjustContronller();
 }
 
 void MyAVLTree::paintTree(NewNode *&root, qreal &centerX, qreal centerY)
@@ -251,7 +378,6 @@ void MyAVLTree::shuffle()
     foreach (QGraphicsItem *item, scene->items()) {
         qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
          if (qgraphicsitem_cast<NewNode *>(item))
-            //item->setPos(-150 + QRandomGenerator::global()->bounded(300), -150 + QRandomGenerator::global()->bounded(300));
             item->setPos(-150 + rand()%300, -150 + rand()%300);
     }
 }
@@ -264,4 +390,149 @@ void MyAVLTree::zoomIn()
 void MyAVLTree::zoomOut()
 {
     scaleView(1 / qreal(1.2));
+}
+
+void MyAVLTree::on_deleteNode_clicked()
+{
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    int number = 0;
+    bool flag = false;
+    if(trees.size()>1){
+        number = QInputDialog::getInt(nullptr,tr("选择树"),tr("请输入树的编号(从左到右)"),std::rand()%trees.size(),0,trees.size()-1,2,&flag);
+        if(!flag){
+            return;
+        }
+    }
+    int input = QInputDialog::getInt(nullptr,tr("删除数字"),tr("请输入0-99的数字"),std::rand()%100,0,100,2,&flag);
+    if(!flag){
+        return;
+    }
+    Status s;
+    if(DeleteAVL(trees.at(number),input,s) == NO){
+        ui->lineEditState->setPalette(Qt::GlobalColor::red);
+        ui->lineEditState->setText("该数字不存在");
+        return;
+    }
+    drawTree();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Delete Success");
+}
+
+void MyAVLTree::on_searchNode_clicked()
+{
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    bool flag = false;
+    int input = QInputDialog::getInt(nullptr,tr("搜索数字"),tr("请输入0-99的数字"),std::rand()%100,0,100,2,&flag);
+    if(!flag){
+        return;
+    }
+    std::vector<AVLTree> result;
+    foreach (AVLTree t, trees) {
+        AVLTree s;
+        s = SearchAVL(t,input);
+        if(nullptr!=s)result.push_back(s);
+    }
+    if(result.size()==0){
+        ui->lineEditState->setPalette(Qt::GlobalColor::red);
+        ui->lineEditState->setText("该数字不存在");
+        return;
+    }
+    //更新点
+    RefleshNode();
+
+    QList<NewNode *> nodes;
+    foreach (QGraphicsItem *item, scene->items()) {
+        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        {
+            node->isSearched=std::find(result.begin(),result.end(),node->node)!=result.end();
+            node->update();
+        }
+    }
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Searched Success");
+}
+
+void MyAVLTree::on_addNode5_clicked()
+{
+    qsrand(QTime(0, 0 ,0).secsTo(QTime::currentTime()));
+    int input = 0;
+    if(trees.empty())
+    {
+        trees.push_back(nullptr);
+    }
+    Status s;
+    for(int i = 0; i < 5; i++)
+    {
+        input = std::rand()%100;
+        if(InsertAVL(trees.at(0),input, s) == NO)
+        {
+            i--;
+        }
+        drawTree();
+        ui->lineEditState->setPalette(Qt::GlobalColor::green);
+        ui->lineEditState->setText("Insert Success");
+        sleep(sleepTime);
+    }
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Insert5 Success");
+}
+
+
+void MyAVLTree::on_horizontalSlider_valueChanged(int value)
+{
+    sleepTime=MAX_SLEEP_TIME/(value+1);
+}
+
+void MyAVLTree::on_pushButtonclear_clicked()
+{
+    destorySelf();
+    initUI();
+}
+
+void MyAVLTree::closeEvent(QCloseEvent *event)
+{
+    destorySelf();
+}
+
+void MyAVLTree::on_PreOrder_clicked()
+{
+    RefleshNode();
+    ui->lineEditState->setPalette(Qt::GlobalColor::white);
+    ui->lineEditState->setText("PreOrder");
+    PreOrder(trees.at(0));
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("PreOrder success");
+}
+
+void MyAVLTree::on_InOrder_clicked()
+{
+    RefleshNode();
+    ui->lineEditState->setPalette(Qt::GlobalColor::white);
+    ui->lineEditState->setText("InOrder");
+    InOrder(trees.at(0));
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("InOrder success");
+}
+
+void MyAVLTree::on_LastOrder_clicked()
+{
+    RefleshNode();
+    ui->lineEditState->setPalette(Qt::GlobalColor::white);
+    ui->lineEditState->setText("LastOrder");
+    LastOrder(trees.at(0));
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("LastOrder success");
+}
+void MyAVLTree::RefleshNode()
+{
+    QList<NewNode *> nodes;
+    foreach (QGraphicsItem *item, scene->items()) {
+        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        {
+            node->isSearched = false;
+            node->update();
+        }
+    }
+    EmptyNodeAndEdge(0);
+    drawTree();
 }

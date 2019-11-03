@@ -21,6 +21,7 @@ public:
     QList<NewEdge*> edges() const;
 
     bool isSearched = false;
+    bool isVisited = false;
 
     enum{Type = UserType + 1};
     int type() const override {return Type;}
