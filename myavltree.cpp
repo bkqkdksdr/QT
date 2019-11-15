@@ -14,6 +14,9 @@
 #include <QGraphicsView>
 #include <QFormLayout>
 #include <QDebug>
+#include <iostream>
+#include <fstream>
+#include <string>
 void sleep(int msec);
 
 const QBrush MyAVLTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
@@ -161,28 +164,28 @@ void MyAVLTree::count(AVLTree &T, int &numbers)
     count(T->rchild,numbers);
 }
 void MyAVLTree::PreOrder(AVLTree T)
-{
-    sleep(sleepTime);
+{   
     if(nullptr == T) return;
     Setvisited(T);
     PreOrder(T->lchild);
     PreOrder(T->rchild);
+    sleep(sleepTime);
 }
 void MyAVLTree::InOrder(AVLTree T)
 {
-    sleep(sleepTime);
     if(nullptr == T) return;
     InOrder(T->lchild);
     Setvisited(T);
     InOrder(T->rchild);
+    sleep(sleepTime);
 }
 void MyAVLTree::LastOrder(AVLTree T)
 {
-    sleep(sleepTime);
     if(nullptr == T) return;
     LastOrder(T->lchild);
     LastOrder(T->rchild);
     Setvisited(T);
+    sleep(sleepTime);
 }
 void MyAVLTree::Setvisited(AVLTree T)
 {
@@ -536,3 +539,4 @@ void MyAVLTree::RefleshNode()
     EmptyNodeAndEdge(0);
     drawTree();
 }
+
