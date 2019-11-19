@@ -12,6 +12,7 @@
 #include "myqueue.h"
 #include "mycqueue.h"
 #include "myavltree.h"
+#include "mybsttree.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,8 @@ private slots:
 
     void on_pushButton5_clicked();
 
+    void on_pushButton6_clicked();
+
 private:
     Ui::MainWindow *ui;
     LinkList linkList;
@@ -43,6 +46,7 @@ private:
     MyQueue myQueue;
     MyCQueue myCQueue;
     MyAVLTree myAVLTree;
+    MyBSTTree myBSTTree;
     void initUI();
 };
 

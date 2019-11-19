@@ -18,7 +18,11 @@ HEADERS += \
     avltree.h \
     newedge.h \
     newnode.h \
-    myavltree.h
+    myavltree.h \
+    bsttree.h \
+    mybsttree.h \
+    newbnode.h \
+    newbedge.h
 
 SOURCES += \
     newarrow.cpp \
@@ -32,7 +36,11 @@ SOURCES += \
     avltree.cpp \
     newedge.cpp \
     newnode.cpp \
-    myavltree.cpp
+    myavltree.cpp \
+    bsttree.cpp \
+    mybsttree.cpp \
+    newbnode.cpp \
+    newbedge.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -40,7 +48,8 @@ FORMS += \
     mystack.ui \
     myqueue.ui \
     mycqueue.ui \
-    myavltree.ui
+    myavltree.ui \
+    mybsttree.ui
 
 DISTFILES +=
 

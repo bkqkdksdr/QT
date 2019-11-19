@@ -1,7 +1,7 @@
-#include "myavltree.h"
-#include "ui_myavltree.h"
-#include "newedge.h"
-#include "newnode.h"
+#include "mybsttree.h"
+#include "ui_mybsttree.h"
+#include "newbedge.h"
+#include "newbnode.h"
 #include "uidefine.h"
 
 #include <math.h>
@@ -19,18 +19,18 @@
 #include <string>
 void sleep(int msec);
 
-const QBrush MyAVLTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
-const QBrush MyAVLTree::visitedBrush=QBrush(Qt::GlobalColor::yellow);
-const QBrush MyAVLTree::markBrush=QBrush(Qt::GlobalColor::green);
+const QBrush MyBSTTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
+const QBrush MyBSTTree::visitedBrush=QBrush(Qt::GlobalColor::yellow);
+const QBrush MyBSTTree::markBrush=QBrush(Qt::GlobalColor::green);
 
-const QFont MyAVLTree::headLabelFont=QFont("Consolas");
-const QFont MyAVLTree::dataFont=QFont("Consolas",8);
+const QFont MyBSTTree::headLabelFont=QFont("Consolas");
+const QFont MyBSTTree::dataFont=QFont("Consolas",8);
 
-const QIntValidator MyAVLTree::dataValidator(-999999999,999999999);
+const QIntValidator MyBSTTree::dataValidator(-999999999,999999999);
 
-MyAVLTree::MyAVLTree(QWidget *parent) :
+MyBSTTree::MyBSTTree(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MyAVLTree)
+    ui(new Ui::MyBSTTree)
 {
     ui->setupUi(this);
     initTextBrowser();
@@ -42,16 +42,16 @@ MyAVLTree::MyAVLTree(QWidget *parent) :
     ui->horizontalSlider->setValue(MAX_SLIDER>>1);
     srand(time_t(nullptr));
 
-    this->setWindowTitle("AVL树");
+    this->setWindowTitle("BST树");
 }
 
-MyAVLTree::~MyAVLTree()
+MyBSTTree::~MyBSTTree()
 {
     delete ui;
 }
 //初始化文本显示区
-void MyAVLTree::initTextBrowser(){
-    QFile file(":/html/html/MyAVLTree.html");
+void MyBSTTree::initTextBrowser(){
+    QFile file(":/html/html/MyBSTTree.HTML");
     file.open(QIODevice::ReadOnly);
     QString htmlString=file.readAll();
     ui->textBrowser->setHtml(htmlString);
@@ -59,7 +59,7 @@ void MyAVLTree::initTextBrowser(){
 }
 
 //初始化UI控件
-void MyAVLTree::initUI()
+void MyBSTTree::initUI()
 {
     //设置图标
     QIcon exeIcon(":/ico/resource/exe.ico");
@@ -93,24 +93,24 @@ void MyAVLTree::initUI()
     ui->horizontalSlider->setTickPosition(QSlider::TicksBelow);
 }
 //初始化视图框架
-void MyAVLTree::initSceneView()
+void MyBSTTree::initSceneView()
 {
     scene=new QGraphicsScene;
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     //ui->graphicsView->setCacheMode(CacheBackground);
-   // ui->graphicsView->setViewportUpdateMode(BoundingRectViewportUpdate);
+    // ui->graphicsView->setViewportUpdateMode(BoundingRectViewportUpdate);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     //ui->graphicsView->setTransformationAnchor(AnchorUnderMouse);
     ui->graphicsView->scale(qreal(0.8), qreal(0.8));
     scene->setSceneRect(0,0,SCENE_MAX_W,SCENE_MAX_H);
     ui->graphicsView->setScene(scene);
 }
-void MyAVLTree::initMyAVLTree()
+void MyBSTTree::initMyBSTTree()
 {
     initSceneView();
 }
 
-void MyAVLTree::destorySelf()
+void MyBSTTree::destorySelf()
 {
     if(trees.size())
     {
@@ -120,7 +120,7 @@ void MyAVLTree::destorySelf()
     adjustContronller();
 }
 
-void MyAVLTree::adjustContronller()
+void MyBSTTree::adjustContronller()
 {
     if(!trees.size())
     {
@@ -156,14 +156,14 @@ void MyAVLTree::adjustContronller()
         }
     }
 }
-void MyAVLTree::count(AVLTree &T, int &numbers)
+void MyBSTTree::count(BSTTree &T, int &numbers)
 {
     if(nullptr == T) return;
     count(T->lchild,numbers);
     numbers++;
     count(T->rchild,numbers);
 }
-void MyAVLTree::PreOrder(AVLTree T)
+void MyBSTTree::PreOrder(BSTTree T)
 {
     sleep(sleepTime);
     if(nullptr == T) return;
@@ -171,15 +171,15 @@ void MyAVLTree::PreOrder(AVLTree T)
     PreOrder(T->lchild);
     PreOrder(T->rchild);
 }
-void MyAVLTree::InOrder(AVLTree T)
+void MyBSTTree::InOrder(BSTTree T)
 {
     sleep(sleepTime);
     if(nullptr == T) return;
     InOrder(T->lchild);
     Setvisited(T);
-    InOrder(T->rchild);  
+    InOrder(T->rchild);
 }
-void MyAVLTree::LastOrder(AVLTree T)
+void MyBSTTree::LastOrder(BSTTree T)
 {
     if(nullptr == T) return;
     LastOrder(T->lchild);
@@ -187,28 +187,28 @@ void MyAVLTree::LastOrder(AVLTree T)
     Setvisited(T);
     sleep(sleepTime);
 }
-void MyAVLTree::Setvisited(AVLTree T)
+void MyBSTTree::Setvisited(BSTTree T)
 {
-    std::vector<AVLTree> result;
-    foreach (AVLTree t, trees) {
-        AVLTree s;
-        s = SearchAVL(t,T->data);
+    std::vector<BSTTree> result;
+    foreach (BSTTree t, trees) {
+        BSTTree s;
+        s = SearchBST(t,T->data);
         if(nullptr!=s)result.push_back(s);
     }
     //更新点
-    QList<NewNode *> nodes;
+    QList<NewbNode *> nodes;
     foreach (QGraphicsItem *item, scene->items()) {
-        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        if (NewbNode *node = qgraphicsitem_cast<NewbNode *>(item))
         {
             node->isVisited=std::find(result.begin(),result.end(),node->node)!=result.end();
             node->update();
         }
     }
 }
-void MyAVLTree::on_pushButtonInit_clicked()
+void MyBSTTree::on_pushButtonInit_clicked()
 {
     destorySelf();
-    initMyAVLTree();
+    initMyBSTTree();
 
     ui->addNode->setEnabled(true);
     ui->deleteNode->setEnabled(true);
@@ -221,7 +221,7 @@ void MyAVLTree::on_pushButtonInit_clicked()
     ui->lineEditState->setText("Create Success");
 }
 
-void MyAVLTree::on_addNode_clicked()
+void MyBSTTree::on_addNode_clicked()
 {
     qsrand(QTime(0, 0 ,0).secsTo(QTime::currentTime()));
     bool flag = false;
@@ -243,8 +243,8 @@ void MyAVLTree::on_addNode_clicked()
     {
         trees.push_back(nullptr);
     }
-    Status s;
-    if(InsertAVL(trees.at(number),input, s) == NO)
+    BSTStatus s;
+    if(InsertBST(trees.at(number),input, s) == BSTNO)
     {
         ui->lineEditState->setPalette(Qt::GlobalColor::red);
         ui->lineEditState->setText("该数字已经存在");
@@ -255,47 +255,47 @@ void MyAVLTree::on_addNode_clicked()
     ui->lineEditState->setText("Insert Success");
 }
 
-void MyAVLTree::itemMoved()
+void MyBSTTree::itemMoved()
 {
     if(!timerId)
         timerId = startTimer(1000 / 25);
 }
 
-void MyAVLTree::EmptyNodeAndEdge(int state)
+void MyBSTTree::EmptyNodeAndEdge(int state)
 {
-    QList<NewNode *> nodes;
+    QList<NewbNode *> nodes;
     foreach(QGraphicsItem *item, scene->items())
     {
-        if(NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        if(NewbNode *node = qgraphicsitem_cast<NewbNode *>(item))
             scene->removeItem(node);
-        if(NewEdge *edge = qgraphicsitem_cast<NewEdge *>(item))
+        if(NewbEdge *edge = qgraphicsitem_cast<NewbEdge *>(item))
             scene->removeItem(edge);
         if(state)sleep(sleepTime);
     }
 }
-void MyAVLTree::drawTree()
+void MyBSTTree::drawTree()
 {
     EmptyNodeAndEdge(0);
     qreal x = 20;
     int depth = 0;
-    foreach(AVLTree t,trees)
+    foreach(BSTTree t,trees)
     {
         int t_d = GetDepth(t);
         depth = depth<t_d?t_d:depth;
-        NewNode *n = new NewNode(this, t);
+        NewbNode *n = new NewbNode(this, t);
         paintTree(n, x, 20);
     }
     scene->setSceneRect(0, 0, x-20, 40*depth);
     adjustContronller();
 }
 
-void MyAVLTree::paintTree(NewNode *&root, qreal &centerX, qreal centerY)
+void MyBSTTree::paintTree(NewbNode *&root, qreal &centerX, qreal centerY)
 {
     if(root->node == nullptr) return;
     if(root->node->lchild != nullptr)
     {
-        NewNode *lnode = new NewNode(this, root->node->lchild);
-        scene->addItem(new NewEdge(root,lnode));
+        NewbNode *lnode = new NewbNode(this, root->node->lchild);
+        scene->addItem(new NewbEdge(root,lnode));
         paintTree(lnode, centerX, centerY+40);
     }
     scene->addItem(root);
@@ -303,13 +303,13 @@ void MyAVLTree::paintTree(NewNode *&root, qreal &centerX, qreal centerY)
     centerX += 40;
     if(root->node->rchild != nullptr)
     {
-        NewNode  *rnode = new NewNode(this, root->node->rchild);
-        scene->addItem(new NewEdge(root, rnode));
+        NewbNode  *rnode = new NewbNode(this, root->node->rchild);
+        scene->addItem(new NewbEdge(root, rnode));
         paintTree(rnode, centerX, centerY+40);
     }
 }
 
-void MyAVLTree::keyPressEvent(QKeyEvent *event)
+void MyBSTTree::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
     {
@@ -328,23 +328,23 @@ void MyAVLTree::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void MyAVLTree::timerEvent(QTimerEvent *event)
+void MyBSTTree::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
 
     return;
 
-    QList<NewNode *> nodes;
+    QList<NewbNode *> nodes;
     foreach (QGraphicsItem *item, scene->items()) {
-        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        if (NewbNode *node = qgraphicsitem_cast<NewbNode *>(item))
             nodes << node;
     }
 
-    foreach (NewNode *node, nodes)
+    foreach (NewbNode *node, nodes)
         node->calculateForces();
 
     bool itemsMoved = false;
-    foreach (NewNode *node, nodes) {
+    foreach (NewbNode *node, nodes) {
         if (node->advance())
             itemsMoved = true;
     }
@@ -356,19 +356,19 @@ void MyAVLTree::timerEvent(QTimerEvent *event)
 }
 
 #if QT_CONFIG(wheelevent)
-void MyAVLTree::wheelEvent(QWheelEvent *event)
+void MyBSTTree::wheelEvent(QWheelEvent *event)
 {
     double temp = pow((double)2, -event->delta() / 240.0);
     scaleView(qreal(temp));
 }
 #endif
 
-void MyAVLTree::drawBackground(QPainter *painter, const QRectF &rect)
+void MyBSTTree::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 }
 
-void MyAVLTree::scaleView(qreal scaleFactor)
+void MyBSTTree::scaleView(qreal scaleFactor)
 {
     qreal factor = ui->graphicsView->transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
     if (factor < 0.07 || factor > 100)
@@ -376,26 +376,26 @@ void MyAVLTree::scaleView(qreal scaleFactor)
 
     ui->graphicsView->scale(scaleFactor, scaleFactor);
 }
-void MyAVLTree::shuffle()
+void MyBSTTree::shuffle()
 {
     foreach (QGraphicsItem *item, scene->items()) {
         qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
-         if (qgraphicsitem_cast<NewNode *>(item))
+         if (qgraphicsitem_cast<NewbNode *>(item))
             item->setPos(-150 + rand()%300, -150 + rand()%300);
     }
 }
 
-void MyAVLTree::zoomIn()
+void MyBSTTree::zoomIn()
 {
     scaleView(qreal(1.2));
 }
 
-void MyAVLTree::zoomOut()
+void MyBSTTree::zoomOut()
 {
     scaleView(1 / qreal(1.2));
 }
 
-void MyAVLTree::on_deleteNode_clicked()
+void MyBSTTree::on_deleteNode_clicked()
 {
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     int number = 0;
@@ -410,8 +410,8 @@ void MyAVLTree::on_deleteNode_clicked()
     if(!flag){
         return;
     }
-    Status s;
-    if(DeleteAVL(trees.at(number),input,s) == NO){
+    BSTStatus s;
+    if(DeleteBST(trees.at(number),input,s) == BSTNO){
         ui->lineEditState->setPalette(Qt::GlobalColor::red);
         ui->lineEditState->setText("该数字不存在");
         return;
@@ -421,7 +421,7 @@ void MyAVLTree::on_deleteNode_clicked()
     ui->lineEditState->setText("Delete Success");
 }
 
-void MyAVLTree::on_searchNode_clicked()
+void MyBSTTree::on_searchNode_clicked()
 {
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     bool flag = false;
@@ -429,10 +429,10 @@ void MyAVLTree::on_searchNode_clicked()
     if(!flag){
         return;
     }
-    std::vector<AVLTree> result;
-    foreach (AVLTree t, trees) {
-        AVLTree s;
-        s = SearchAVL(t,input);
+    std::vector<BSTTree> result;
+    foreach (BSTTree t, trees) {
+        BSTTree s;
+        s = SearchBST(t,input);
         if(nullptr!=s)result.push_back(s);
     }
     if(result.size()==0){
@@ -443,9 +443,9 @@ void MyAVLTree::on_searchNode_clicked()
     //更新点
     RefleshNode();
 
-    QList<NewNode *> nodes;
+    QList<NewbNode *> nodes;
     foreach (QGraphicsItem *item, scene->items()) {
-        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        if (NewbNode *node = qgraphicsitem_cast<NewbNode *>(item))
         {
             node->isSearched=std::find(result.begin(),result.end(),node->node)!=result.end();
             node->update();
@@ -455,7 +455,7 @@ void MyAVLTree::on_searchNode_clicked()
     ui->lineEditState->setText("Searched Success");
 }
 
-void MyAVLTree::on_addNode5_clicked()
+void MyBSTTree::on_addNode5_clicked()
 {
     qsrand(QTime(0, 0 ,0).secsTo(QTime::currentTime()));
     int input = 0;
@@ -463,11 +463,11 @@ void MyAVLTree::on_addNode5_clicked()
     {
         trees.push_back(nullptr);
     }
-    Status s;
+    BSTStatus s;
     for(int i = 0; i < 5; i++)
     {
         input = std::rand()%100;
-        if(InsertAVL(trees.at(0),input, s) == NO)
+        if(InsertBST(trees.at(0),input, s) == BSTNO)
         {
             i--;
         }
@@ -481,25 +481,25 @@ void MyAVLTree::on_addNode5_clicked()
 }
 
 
-void MyAVLTree::on_horizontalSlider_valueChanged(int value)
+void MyBSTTree::on_horizontalSlider_valueChanged(int value)
 {
     sleepTime=MAX_SLEEP_TIME/(value+1);
 }
 
-void MyAVLTree::on_pushButtonclear_clicked()
+void MyBSTTree::on_pushButtonclear_clicked()
 {
     destorySelf();
     initUI();
 }
 
-void MyAVLTree::closeEvent(QCloseEvent *event)
+void MyBSTTree::closeEvent(QCloseEvent *event)
 {
     destorySelf();
     initUI();
     adjustContronller();
 }
 
-void MyAVLTree::on_PreOrder_clicked()
+void MyBSTTree::on_PreOrder_clicked()
 {
     RefleshNode();
     ui->lineEditState->setPalette(Qt::GlobalColor::white);
@@ -509,17 +509,17 @@ void MyAVLTree::on_PreOrder_clicked()
     ui->lineEditState->setText("PreOrder success");
 }
 
-void MyAVLTree::on_InOrder_clicked()
+void MyBSTTree::on_InOrder_clicked()
 {
     RefleshNode();
     ui->lineEditState->setPalette(Qt::GlobalColor::white);
-    ui->lineEditState->setText("InOrder");
+    ui->lineEditState->setText("IBSTNOrder");
     InOrder(trees.at(0));
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
-    ui->lineEditState->setText("InOrder success");
+    ui->lineEditState->setText("IBSTNOrder success");
 }
 
-void MyAVLTree::on_LastOrder_clicked()
+void MyBSTTree::on_LastOrder_clicked()
 {
     RefleshNode();
     ui->lineEditState->setPalette(Qt::GlobalColor::white);
@@ -528,11 +528,11 @@ void MyAVLTree::on_LastOrder_clicked()
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("LastOrder success");
 }
-void MyAVLTree::RefleshNode()
+void MyBSTTree::RefleshNode()
 {
-    QList<NewNode *> nodes;
+    QList<NewbNode *> nodes;
     foreach (QGraphicsItem *item, scene->items()) {
-        if (NewNode *node = qgraphicsitem_cast<NewNode *>(item))
+        if (NewbNode *node = qgraphicsitem_cast<NewbNode *>(item))
         {
             node->isSearched = false;
             node->update();

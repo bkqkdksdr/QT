@@ -1,6 +1,6 @@
-#include "newnode.h"
-#include "newedge.h"
-#include "myavltree.h"
+#include "newbnode.h"
+#include "newbedge.h"
+#include "MyBSTTree.h"
 #include "mybsttree.h"
 
 #include <QGraphicsScene>
@@ -8,8 +8,8 @@
 #include <QPainter>
 #include <QStyleOption>
 
-NewNode::NewNode(MyAVLTree *myAVLTree,AVLTree node)
-    :myAVLTree(myAVLTree)
+NewbNode::NewbNode(MyBSTTree *myBSTTree,BSTTree node)
+    :myBSTTree(myBSTTree)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -18,18 +18,18 @@ NewNode::NewNode(MyAVLTree *myAVLTree,AVLTree node)
     this->node = node;
 }
 
-void NewNode::addEdge(NewEdge *edge)
+void NewbNode::addEdge(NewbEdge *edge)
 {
     edgeList << edge;
     edge->adjust();
 }
 
-QList<NewEdge *> NewNode::edges() const
+QList<NewbEdge *> NewbNode::edges() const
 {
     return edgeList;
 }
 
-void NewNode::calculateForces()
+void NewbNode::calculateForces()
 {
     if(scene() || scene()->mouseGrabberItem() == this)
     {
@@ -40,7 +40,7 @@ void NewNode::calculateForces()
     qreal yvel = 0;
     foreach(QGraphicsItem *item, scene()->items() )
     {
-        NewNode *node = qgraphicsitem_cast<NewNode *>(item);
+        NewbNode *node = qgraphicsitem_cast<NewbNode *>(item);
         if(!node) continue;
 
         QPointF vec = mapToItem(node, 0, 0);
@@ -55,7 +55,7 @@ void NewNode::calculateForces()
     }
 
     double weight = (edgeList.size() + 1) * 10;
-    foreach(NewEdge *edge, edgeList)
+    foreach(NewbEdge *edge, edgeList)
     {
         QPointF vec;
         if(edge->sourceNode() == this)
@@ -75,7 +75,7 @@ void NewNode::calculateForces()
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
 }
 
-bool NewNode::advance()
+bool NewbNode::advance()
 {
     if(newPos == pos())
         return false;
@@ -84,20 +84,20 @@ bool NewNode::advance()
     return true;
 }
 
-QRectF NewNode::boundingRect() const
+QRectF NewbNode::boundingRect() const
 {
     qreal adjust = 2;
     return QRectF(-10 - adjust, -10 - adjust, 23 + adjust, 23+adjust);
 }
 
-QPainterPath NewNode::shape() const
+QPainterPath NewbNode::shape() const
 {
     QPainterPath path;
     path.addEllipse(-10, -10, 20, 20);
     return path;
 }
 
-void NewNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void NewbNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRadialGradient gradient(-3, -3, 10);
     if(option->state & QStyle::State_Sunken)
@@ -162,15 +162,15 @@ void NewNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawText(textRect, Qt::AlignCenter, message);
 }
 
-QVariant NewNode::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant NewbNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     switch(change)
     {
     case ItemPositionHasChanged:
-        foreach(NewEdge *edge, edgeList)
+        foreach(NewbEdge *edge, edgeList)
             edge->adjust();
         //one or never
-        myAVLTree->itemMoved();
+        myBSTTree->itemMoved();
         break;
     default:
         break;
@@ -179,13 +179,13 @@ QVariant NewNode::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItem::itemChange(change, value);
 }
 
-void NewNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void NewbNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void NewNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void NewbNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);

@@ -5,6 +5,7 @@
         <file>html/MyQueue.HTML</file>
         <file>html/MyCQueue.HTML</file>
         <file>html/MyAVLTree.html</file>
+        <file>html/MyBSTTree.HTML</file>
     </qresource>
     <qresource prefix="/ico">
         <file>resource/background.png</file>
@@ -18,8 +19,9 @@
         <file>resource/mystack.PNG</file>
         <file>resource/myqueue.PNG</file>
         <file>resource/mycqueue.PNG</file>
-        <file>resource/mybst.png</file>
         <file>resource/avltree.txt</file>
+        <file>resource/myavl.png</file>
+        <file>resource/mybst.png</file>
     </qresource>
     <qresource prefix="/txt"/>
     <qresource prefix="/backup"/>

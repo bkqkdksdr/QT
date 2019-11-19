@@ -31,7 +31,8 @@ void MainWindow::initUI()
     ui->pushButton2->setToolTip("<img src=':/tip/resource/mystack.PNG' /> ");
     ui->pushButton3->setToolTip("<img src=':/tip/resource/myqueue.PNG' /> ");
     ui->pushButton4->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
-    ui->pushButton5->setToolTip("<img src=':/tip/resource/mybst.png' /> ");
+    ui->pushButton5->setToolTip("<img src=':/tip/resource/myavl.png' /> ");
+    ui->pushButton6->setToolTip("<img src=':/tip/resource/mybst.png' /> ");
 }
 
 void MainWindow::on_pushButton1_clicked()
@@ -58,4 +59,9 @@ void MainWindow::on_pushButton4_clicked()
 void MainWindow::on_pushButton5_clicked()
 {
     myAVLTree.show();
+}
+
+void MainWindow::on_pushButton6_clicked()
+{
+    myBSTTree.show();
 }
