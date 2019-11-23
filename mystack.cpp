@@ -315,6 +315,7 @@ void MyStack::destorySelf()
 void MyStack::closeEvent(QCloseEvent *event)
 {
     destorySelf();
+    initUI();
 }
 //槽函数
 //创建按钮

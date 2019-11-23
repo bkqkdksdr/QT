@@ -33,6 +33,8 @@ void MainWindow::initUI()
     ui->pushButton4->setToolTip("<img src=':/tip/resource/mycqueue.PNG' /> ");
     ui->pushButton5->setToolTip("<img src=':/tip/resource/myavl.png' /> ");
     ui->pushButton6->setToolTip("<img src=':/tip/resource/mybst.png' /> ");
+    ui->pushButton7->setToolTip("<img src=':/tip/resource/clinklist.png' /> ");
+    ui->pushButton8->setToolTip("<img src=':/tip/resource/dlinklist.png' /> ");
 }
 
 void MainWindow::on_pushButton1_clicked()
@@ -64,4 +66,14 @@ void MainWindow::on_pushButton5_clicked()
 void MainWindow::on_pushButton6_clicked()
 {
     myBSTTree.show();
+}
+
+void MainWindow::on_pushButton7_clicked()
+{
+    clinkList.show();
+}
+
+void MainWindow::on_pushButton8_clicked()
+{
+    dlinkList.show();
 }

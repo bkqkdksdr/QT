@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>757</width>
-    <height>516</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,8 +77,8 @@ QPushButton:pressed {
    <widget class="QPushButton" name="pushButton2">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>100</y>
+      <x>100</x>
+      <y>220</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -121,7 +121,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>220</y>
+      <y>340</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -164,7 +164,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>220</y>
+      <y>340</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -207,7 +207,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>340</y>
+      <y>460</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -250,7 +250,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>340</y>
+      <y>460</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -287,6 +287,92 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string>BST树(MyAVLTree)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton7">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>100</y>
+      <width>221</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>OpenHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+     background-color: #D4DCDF;
+     border-radius: 5%;
+}
+
+QPushButton:pressed {
+     background-color: #D4DCDF;
+     border-radius: 5%;
+	color: white;
+	border: 5px solid white;
+}</string>
+    </property>
+    <property name="text">
+     <string>循环链表(CLinkList)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton8">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>220</y>
+      <width>221</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>OpenHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+     background-color: #D4DCDF;
+     border-radius: 5%;
+}
+
+QPushButton:pressed {
+     background-color: #D4DCDF;
+     border-radius: 5%;
+	color: white;
+	border: 5px solid white;
+}</string>
+    </property>
+    <property name="text">
+     <string>双向链表(DLinkList)</string>
     </property>
    </widget>
   </widget>

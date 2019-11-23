@@ -428,6 +428,7 @@ void MyCQueue::destorySelf()
 void MyCQueue::closeEvent(QCloseEvent *event)
 {
     destorySelf();
+    initUI();
 }
 //槽函数
 //创建按钮

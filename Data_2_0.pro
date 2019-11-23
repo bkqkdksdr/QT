@@ -22,7 +22,10 @@ HEADERS += \
     bsttree.h \
     mybsttree.h \
     newbnode.h \
-    newbedge.h
+    newbedge.h \
+    clinklist.h \
+    dlnode.h \
+    dlinklist.h
 
 SOURCES += \
     newarrow.cpp \
@@ -40,7 +43,10 @@ SOURCES += \
     bsttree.cpp \
     mybsttree.cpp \
     newbnode.cpp \
-    newbedge.cpp
+    newbedge.cpp \
+    clinklist.cpp \
+    dlnode.cpp \
+    dlinklist.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -49,7 +55,9 @@ FORMS += \
     myqueue.ui \
     mycqueue.ui \
     myavltree.ui \
-    mybsttree.ui
+    mybsttree.ui \
+    clinklist.ui \
+    dlinklist.ui
 
 DISTFILES +=
 

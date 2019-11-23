@@ -8,6 +8,8 @@
 #include <QPalette>
 
 #include "linklist.h"
+#include "clinklist.h"
+#include "dlinklist.h"
 #include "mystack.h"
 #include "myqueue.h"
 #include "mycqueue.h"
@@ -39,6 +41,10 @@ private slots:
 
     void on_pushButton6_clicked();
 
+    void on_pushButton7_clicked();
+
+    void on_pushButton8_clicked();
+
 private:
     Ui::MainWindow *ui;
     LinkList linkList;
@@ -47,6 +53,8 @@ private:
     MyCQueue myCQueue;
     MyAVLTree myAVLTree;
     MyBSTTree myBSTTree;
+    CLinkList clinkList;
+    DLinkList dlinkList;
     void initUI();
 };
 

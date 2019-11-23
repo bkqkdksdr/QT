@@ -6,6 +6,8 @@
         <file>html/MyCQueue.HTML</file>
         <file>html/MyAVLTree.html</file>
         <file>html/MyBSTTree.HTML</file>
+        <file>html/CLinkList.html</file>
+        <file>html/DLinkList.html</file>
     </qresource>
     <qresource prefix="/ico">
         <file>resource/background.png</file>

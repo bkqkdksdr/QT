@@ -370,6 +370,7 @@ void MyQueue::destorySelf()
 void MyQueue::closeEvent(QCloseEvent *event)
 {
     destorySelf();
+    initUI();
 }
 //创建节点
 void MyQueue::on_pushButtonInit_clicked()
