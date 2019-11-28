@@ -64,6 +64,8 @@ private slots:
 
     void on_LastOrder_clicked();
 
+    void on_LevelOrder_clicked();
+
 private:
     Ui::MyAVLTree *ui;
     QGraphicsScene *scene;
@@ -82,6 +84,7 @@ private:
     void PreOrder(AVLTree T);
     void InOrder(AVLTree T);
     void LastOrder(AVLTree T);
+    void LevelOrder(AVLTree T);
     void Setvisited(AVLTree T);
     void RefleshNode();
 

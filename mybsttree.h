@@ -64,6 +64,8 @@ private slots:
 
     void on_LastOrder_clicked();
 
+    void on_LevelOrder_clicked();
+
 private:
     Ui::MyBSTTree *ui;
     QGraphicsScene *scene;
@@ -82,6 +84,7 @@ private:
     void PreOrder(BSTTree T);
     void InOrder(BSTTree T);
     void LastOrder(BSTTree T);
+    void LevelOrder(BSTTree T);
     void Setvisited(BSTTree T);
     void RefleshNode();
 

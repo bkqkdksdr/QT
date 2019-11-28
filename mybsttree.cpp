@@ -14,6 +14,7 @@
 #include <QGraphicsView>
 #include <QFormLayout>
 #include <QDebug>
+#include <QQueue>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -79,6 +80,7 @@ void MyBSTTree::initUI()
     ui->InOrder->setEnabled(false);
     ui->PreOrder->setEnabled(false);
     ui->LastOrder->setEnabled(false);
+    ui->LevelOrder->setEnabled(false);
 
     ui->lineEditState->setEnabled(false);
     ui->lineEditState->setFont(dataFont);
@@ -128,6 +130,7 @@ void MyBSTTree::adjustContronller()
         ui->InOrder->setEnabled(false);
         ui->PreOrder->setEnabled(false);
         ui->LastOrder->setEnabled(false);
+        ui->LevelOrder->setEnabled(false);
         ui->deleteNode->setEnabled(false);
         ui->searchNode->setEnabled(false);
     }else
@@ -141,6 +144,7 @@ void MyBSTTree::adjustContronller()
             ui->InOrder->setEnabled(true);
             ui->PreOrder->setEnabled(true);
             ui->LastOrder->setEnabled(true);
+            ui->LevelOrder->setEnabled(true);
             ui->addNode->setEnabled(true);
             ui->addNode5->setEnabled(true);
             ui->deleteNode->setEnabled(true);
@@ -151,6 +155,7 @@ void MyBSTTree::adjustContronller()
             ui->InOrder->setEnabled(false);
             ui->PreOrder->setEnabled(false);
             ui->LastOrder->setEnabled(false);
+            ui->LevelOrder->setEnabled(false);
             ui->deleteNode->setEnabled(false);
             ui->searchNode->setEnabled(false);
         }
@@ -186,6 +191,22 @@ void MyBSTTree::LastOrder(BSTTree T)
     LastOrder(T->rchild);
     Setvisited(T);
     sleep(sleepTime);
+}
+void MyBSTTree::LevelOrder(BSTTree T)
+{
+    QQueue<BSTTree> q;
+    if(nullptr == T) return;
+    q.enqueue(T);
+    while(!q.empty())
+    {
+        BSTTree temp = q.dequeue();
+        Setvisited(temp);
+        sleep(sleepTime);
+        if(temp->lchild)
+            q.enqueue(temp->lchild);
+        if(temp->rchild)
+            q.enqueue(temp->rchild);
+     }
 }
 void MyBSTTree::Setvisited(BSTTree T)
 {
@@ -542,3 +563,13 @@ void MyBSTTree::RefleshNode()
     drawTree();
 }
 
+
+void MyBSTTree::on_LevelOrder_clicked()
+{
+    RefleshNode();
+    ui->lineEditState->setPalette(Qt::GlobalColor::white);
+    ui->lineEditState->setText("LevelOrder");
+    LevelOrder(trees.at(0));
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("LevelOrder success");
+}

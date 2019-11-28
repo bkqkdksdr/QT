@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QSpinBox>
 #include <QTime>
+#include <QQueue>
 #include <QDialogButtonBox>
 #include <QGraphicsView>
 #include <QFormLayout>
@@ -17,6 +18,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <QPainter>
 void sleep(int msec);
 
 const QBrush MyAVLTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
@@ -79,6 +81,7 @@ void MyAVLTree::initUI()
     ui->InOrder->setEnabled(false);
     ui->PreOrder->setEnabled(false);
     ui->LastOrder->setEnabled(false);
+    ui->LevelOrder->setEnabled(false);
 
     ui->lineEditState->setEnabled(false);
     ui->lineEditState->setFont(dataFont);
@@ -128,6 +131,7 @@ void MyAVLTree::adjustContronller()
         ui->InOrder->setEnabled(false);
         ui->PreOrder->setEnabled(false);
         ui->LastOrder->setEnabled(false);
+        ui->LevelOrder->setEnabled(false);
         ui->deleteNode->setEnabled(false);
         ui->searchNode->setEnabled(false);
     }else
@@ -141,6 +145,7 @@ void MyAVLTree::adjustContronller()
             ui->InOrder->setEnabled(true);
             ui->PreOrder->setEnabled(true);
             ui->LastOrder->setEnabled(true);
+            ui->LevelOrder->setEnabled(true);
             ui->addNode->setEnabled(true);
             ui->addNode5->setEnabled(true);
             ui->deleteNode->setEnabled(true);
@@ -151,6 +156,7 @@ void MyAVLTree::adjustContronller()
             ui->InOrder->setEnabled(false);
             ui->PreOrder->setEnabled(false);
             ui->LastOrder->setEnabled(false);
+            ui->LevelOrder->setEnabled(false);
             ui->deleteNode->setEnabled(false);
             ui->searchNode->setEnabled(false);
         }
@@ -186,6 +192,22 @@ void MyAVLTree::LastOrder(AVLTree T)
     LastOrder(T->rchild);
     Setvisited(T);
     sleep(sleepTime);
+}
+void MyAVLTree::LevelOrder(AVLTree T)
+{
+    QQueue<AVLTree> q;
+    if(nullptr == T) return;
+    q.enqueue(T);
+    while(!q.empty())
+    {
+        AVLTree temp = q.dequeue();
+        Setvisited(temp);
+        sleep(sleepTime);
+        if(temp->lchild)
+            q.enqueue(temp->lchild);
+        if(temp->rchild)
+            q.enqueue(temp->rchild);
+     }
 }
 void MyAVLTree::Setvisited(AVLTree T)
 {
@@ -542,3 +564,13 @@ void MyAVLTree::RefleshNode()
     drawTree();
 }
 
+
+void MyAVLTree::on_LevelOrder_clicked()
+{
+    RefleshNode();
+    ui->lineEditState->setPalette(Qt::GlobalColor::white);
+    ui->lineEditState->setText("LevelOrder");
+    LevelOrder(trees.at(0));
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("LevelOrder success");
+}
