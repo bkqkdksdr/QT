@@ -17,8 +17,11 @@
 #include <QDebug>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include <QFile>
 #include <QPainter>
+using namespace std;
 void sleep(int msec);
 
 const QBrush MyAVLTree::normalBursh=QBrush(Qt::GlobalColor::darkGray);
@@ -94,6 +97,7 @@ void MyAVLTree::initUI()
     ui->horizontalSlider->setMinimum(0);
     ui->horizontalSlider->setMaximum(MAX_SLIDER);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBelow);
+    adjustContronller();
 }
 //初始化视图框架
 void MyAVLTree::initSceneView()
@@ -111,6 +115,7 @@ void MyAVLTree::initSceneView()
 void MyAVLTree::initMyAVLTree()
 {
     initSceneView();
+    traces.clear();
 }
 
 void MyAVLTree::destorySelf()
@@ -134,6 +139,8 @@ void MyAVLTree::adjustContronller()
         ui->LevelOrder->setEnabled(false);
         ui->deleteNode->setEnabled(false);
         ui->searchNode->setEnabled(false);
+        ui->loadButton->setEnabled(true);
+        ui->saveButton->setEnabled(false);
     }else
     {
         int numbers = 0;
@@ -150,6 +157,8 @@ void MyAVLTree::adjustContronller()
             ui->addNode5->setEnabled(true);
             ui->deleteNode->setEnabled(true);
             ui->searchNode->setEnabled(true);
+            ui->saveButton->setEnabled(true);
+            ui->loadButton->setEnabled(false);
         }else
         {
             ui->pushButtonclear->setEnabled(false);
@@ -159,6 +168,8 @@ void MyAVLTree::adjustContronller()
             ui->LevelOrder->setEnabled(false);
             ui->deleteNode->setEnabled(false);
             ui->searchNode->setEnabled(false);
+            ui->loadButton->setEnabled(true);
+            ui->saveButton->setEnabled(false);
         }
     }
 }
@@ -241,6 +252,7 @@ void MyAVLTree::on_pushButtonInit_clicked()
     adjustContronller();
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("Create Success");
+
 }
 
 void MyAVLTree::on_addNode_clicked()
@@ -272,6 +284,10 @@ void MyAVLTree::on_addNode_clicked()
         ui->lineEditState->setText("该数字已经存在");
         return ;
     }
+    trace temp;
+    temp.value=input;
+    temp.insert=true;
+    traces.push_back(temp);
     drawTree();
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("Insert Success");
@@ -438,6 +454,10 @@ void MyAVLTree::on_deleteNode_clicked()
         ui->lineEditState->setText("该数字不存在");
         return;
     }
+    trace temp;
+    temp.value=input;
+    temp.insert = false;
+    traces.push_back(temp);
     drawTree();
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("Delete Success");
@@ -493,6 +513,10 @@ void MyAVLTree::on_addNode5_clicked()
         {
             i--;
         }
+        trace temp;
+        temp.value=input;
+        temp.insert = true;
+        traces.push_back(temp);
         drawTree();
         ui->lineEditState->setPalette(Qt::GlobalColor::green);
         ui->lineEditState->setText("Insert Success");
@@ -512,6 +536,7 @@ void MyAVLTree::on_pushButtonclear_clicked()
 {
     destorySelf();
     initUI();
+    adjustContronller();
 }
 
 void MyAVLTree::closeEvent(QCloseEvent *event)
@@ -573,4 +598,85 @@ void MyAVLTree::on_LevelOrder_clicked()
     LevelOrder(trees.at(0));
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("LevelOrder success");
+}
+
+void MyAVLTree::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\myavltree.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    in<<traces.size()<<endl;
+    for(auto i:traces){
+        in << i.value << endl << i.insert << endl;
+    }
+    adjustContronller();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void MyAVLTree::on_loadButton_clicked()
+{
+    destorySelf();
+    initMyAVLTree();
+    qDebug() << "size"<< traces.size()<<  endl;
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\myavltree.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int count;
+    int value;
+    bool insert;
+    QString temp = QString(readFile.readLine());
+    count = temp.toInt();
+    qDebug() << count <<  endl;
+    for(int i = 0; i < count; i++)
+    {
+        temp = QString(readFile.readLine());
+        value = temp.toInt();
+         qDebug() << value ;
+        temp = QString(readFile.readLine());
+        insert = temp.toInt();
+         qDebug() << insert <<  endl;
+        if(insert){
+            int number = 0;
+            int input = value;
+            if(trees.empty())
+            {
+                trees.push_back(nullptr);
+            }
+            Status s;
+            if(InsertAVL(trees.at(number),input, s) == NO)
+            {
+                ui->lineEditState->setPalette(Qt::GlobalColor::red);
+                ui->lineEditState->setText("该数字已经存在");
+                return ;
+            }
+            trace temp;
+            temp.value=input;
+            temp.insert=true;
+            traces.push_back(temp);
+        }else{
+            int number = 0;
+            int input = value;
+            Status s;
+            if(DeleteAVL(trees.at(number),input,s) == NO){
+                ui->lineEditState->setPalette(Qt::GlobalColor::red);
+                ui->lineEditState->setText("该数字不存在");
+                return;
+            }
+            trace temp;
+            temp.value=input;
+            temp.insert = false;
+            traces.push_back(temp);
+        }
+    }
+    drawTree();
+    adjustContronller();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }

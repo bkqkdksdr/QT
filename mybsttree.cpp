@@ -110,6 +110,7 @@ void MyBSTTree::initSceneView()
 void MyBSTTree::initMyBSTTree()
 {
     initSceneView();
+    traces.clear();
 }
 
 void MyBSTTree::destorySelf()
@@ -133,6 +134,8 @@ void MyBSTTree::adjustContronller()
         ui->LevelOrder->setEnabled(false);
         ui->deleteNode->setEnabled(false);
         ui->searchNode->setEnabled(false);
+        ui->loadButton->setEnabled(true);
+        ui->saveButton->setEnabled(false);
     }else
     {
         int numbers = 0;
@@ -149,6 +152,8 @@ void MyBSTTree::adjustContronller()
             ui->addNode5->setEnabled(true);
             ui->deleteNode->setEnabled(true);
             ui->searchNode->setEnabled(true);
+            ui->saveButton->setEnabled(true);
+            ui->loadButton->setEnabled(false);
         }else
         {
             ui->pushButtonclear->setEnabled(false);
@@ -158,6 +163,8 @@ void MyBSTTree::adjustContronller()
             ui->LevelOrder->setEnabled(false);
             ui->deleteNode->setEnabled(false);
             ui->searchNode->setEnabled(false);
+            ui->loadButton->setEnabled(true);
+            ui->saveButton->setEnabled(false);
         }
     }
 }
@@ -271,6 +278,10 @@ void MyBSTTree::on_addNode_clicked()
         ui->lineEditState->setText("该数字已经存在");
         return ;
     }
+    bsttrace temp;
+    temp.value=input;
+    temp.insert=true;
+    traces.push_back(temp);
     drawTree();
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("Insert Success");
@@ -437,6 +448,10 @@ void MyBSTTree::on_deleteNode_clicked()
         ui->lineEditState->setText("该数字不存在");
         return;
     }
+    bsttrace temp;
+    temp.value=input;
+    temp.insert=false;
+    traces.push_back(temp);
     drawTree();
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("Delete Success");
@@ -492,6 +507,10 @@ void MyBSTTree::on_addNode5_clicked()
         {
             i--;
         }
+        bsttrace temp;
+        temp.value=input;
+        temp.insert = true;
+        traces.push_back(temp);
         drawTree();
         ui->lineEditState->setPalette(Qt::GlobalColor::green);
         ui->lineEditState->setText("Insert Success");
@@ -511,6 +530,7 @@ void MyBSTTree::on_pushButtonclear_clicked()
 {
     destorySelf();
     initUI();
+    adjustContronller();
 }
 
 void MyBSTTree::closeEvent(QCloseEvent *event)
@@ -572,4 +592,85 @@ void MyBSTTree::on_LevelOrder_clicked()
     LevelOrder(trees.at(0));
     ui->lineEditState->setPalette(Qt::GlobalColor::green);
     ui->lineEditState->setText("LevelOrder success");
+}
+
+void MyBSTTree::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\mybsttree.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    in<<traces.size()<<endl;
+    for(auto i:traces){
+        in << i.value << endl << i.insert << endl;
+    }
+    adjustContronller();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void MyBSTTree::on_loadButton_clicked()
+{
+    destorySelf();
+    initMyBSTTree();
+    qDebug() << "size"<< traces.size()<<  endl;
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\mybsttree.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int count;
+    int value;
+    bool insert;
+    QString temp = QString(readFile.readLine());
+    count = temp.toInt();
+    qDebug() << count <<  endl;
+    for(int i = 0; i < count; i++)
+    {
+        temp = QString(readFile.readLine());
+        value = temp.toInt();
+         qDebug() << value ;
+        temp = QString(readFile.readLine());
+        insert = temp.toInt();
+         qDebug() << insert <<  endl;
+        if(insert){
+            int number = 0;
+            int input = value;
+            if(trees.empty())
+            {
+                trees.push_back(nullptr);
+            }
+            BSTStatus s;
+            if(InsertBST(trees.at(number),input, s) == BSTNO)
+            {
+                ui->lineEditState->setPalette(Qt::GlobalColor::red);
+                ui->lineEditState->setText("该数字已经存在");
+                return ;
+            }
+            bsttrace temp;
+            temp.value=input;
+            temp.insert=true;
+            traces.push_back(temp);
+        }else{
+            int number = 0;
+            int input = value;
+            BSTStatus s;
+            if(DeleteBST(trees.at(number),input,s) == BSTNO){
+                ui->lineEditState->setPalette(Qt::GlobalColor::red);
+                ui->lineEditState->setText("该数字不存在");
+                return;
+            }
+            bsttrace temp;
+            temp.value=input;
+            temp.insert = false;
+            traces.push_back(temp);
+        }
+    }
+    drawTree();
+    adjustContronller();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }

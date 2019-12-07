@@ -39,6 +39,10 @@ private slots:
 
     void on_pushButtonClear_clicked();                      //清除
 
+    void on_saveButton_clicked();
+
+    void on_loadButton_clicked();
+
 private:
     Ui::MyQueue *ui;                                        //ui指针
     QGraphicsScene *scene;                                  //视图场景指针

@@ -63,7 +63,7 @@ void MyQueue::initUI()
     ui->pushButtonInsert->setEnabled(false);
     ui->pushButtonRandomInsert5->setEnabled(false);
     ui->lineEditInsert->setEnabled(false);
-
+    ui->saveButton->setEnabled(false);
     ui->pushButtonDelete->setEnabled(false);
 
     ui->pushButtonLocate->setEnabled(false);
@@ -86,6 +86,7 @@ void MyQueue::initUI()
     ui->horizontalSlider->setMinimum(0);
     ui->horizontalSlider->setMaximum(MAX_SLIDER);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBelow);
+    adjustController();
 }
 //初始化视图框架
 void MyQueue::initSceneView()
@@ -100,6 +101,8 @@ void MyQueue::adjustController()
 {
     //节点个数可能会改变，需要考虑一些操作的合理性
     ui->pushButtonDelete->setEnabled(countNode);
+    ui->saveButton->setEnabled(countNode);
+    ui->loadButton->setEnabled(!countNode);
     if(countNode==0){
         ui->pushButtonLocate->setEnabled(false);
         ui->pushButtonDelete->setEnabled(false);
@@ -109,7 +112,11 @@ void MyQueue::adjustController()
         ui->pushButtonLocate->setEnabled(true);
         ui->pushButtonDelete->setEnabled(true);
     }
-
+    ui->lineEditInsert->setPlaceholderText("插入值：Int");
+    ui->lineEditLocate->setPlaceholderText("栈顶值：Int");
+    ui->lineEditInsert->setValidator(&MyQueue::dataValidator);
+    ui->lineEditLocate->setValidator(&MyQueue::dataValidator);
+    ui->lineEditnumber->setValidator(&MyQueue::dataValidator);
     ui->lineEditLocate->clear();
     ui->lineEditnumber->setText(QString::number(countNode));
 
@@ -457,4 +464,65 @@ void MyQueue::on_pushButtonClear_clicked()
 {
     destorySelf();
     initUI();
+    adjustController();
+}
+
+void MyQueue::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\myqueue.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    int count = countNode;
+    in<< count <<"\n";
+    int number;
+    LNode *pLNode=head;
+
+    for(int i = 0; i < count; i++)
+    {
+        pLNode = pLNode->next;
+        number = pLNode->data.toInt();
+        in<< number << "\n";
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void MyQueue::on_loadButton_clicked()
+{
+    destorySelf();
+    initMyQueue();
+    ui->pushButtonClear->setEnabled(true);
+    ui->pushButtonInsert->setEnabled(true);
+    ui->pushButtonRandomInsert5->setEnabled(true);
+    ui->lineEditInsert->setEnabled(true);
+    ui->pushButtonLocate->setEnabled(true);
+    ui->lineEditLocate->setEnabled(true);
+    qDebug()<< " ****" << endl;
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\myqueue.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int count;
+    int number;
+    QString temp = QString(readFile.readLine());
+    count = temp.toInt();
+    qDebug() << count  << " count number" << endl;
+    for(int i = 0; i < count; i++)
+    {
+        temp = QString(readFile.readLine());
+        number = temp.toInt();
+        insertLNode(countNode+1,QString::number(number));
+        sleep(sleepTime);
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }

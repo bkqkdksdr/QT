@@ -9,7 +9,10 @@
 #include <QGraphicsItem>
 #include <QIntValidator>
 #include "avltree.h"
-
+struct trace{
+    int value;
+    bool insert;
+};
 class NewNode;
 
 namespace Ui {
@@ -26,6 +29,7 @@ public:
 
     AVLTree root;
     std::vector<AVLTree> trees;
+    std::vector<trace> traces;
     void itemMoved();
     void drawTree();
     void paintTree(NewNode* &root, qreal &centerX, qreal centerY);
@@ -65,6 +69,10 @@ private slots:
     void on_LastOrder_clicked();
 
     void on_LevelOrder_clicked();
+
+    void on_saveButton_clicked();
+
+    void on_loadButton_clicked();
 
 private:
     Ui::MyAVLTree *ui;

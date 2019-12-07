@@ -9,7 +9,10 @@
 #include <QGraphicsItem>
 #include <QIntValidator>
 #include <bsttree.h>
-
+struct bsttrace{
+    int value;
+    bool insert;
+};
 class NewbNode;
 
 namespace Ui {
@@ -26,6 +29,7 @@ public:
 
     BSTTree root;
     std::vector<BSTTree> trees;
+    std::vector<bsttrace> traces;
     void itemMoved();
     void drawTree();
     void paintTree(NewbNode* &root, qreal &centerX, qreal centerY);
@@ -65,6 +69,10 @@ private slots:
     void on_LastOrder_clicked();
 
     void on_LevelOrder_clicked();
+
+    void on_saveButton_clicked();
+
+    void on_loadButton_clicked();
 
 private:
     Ui::MyBSTTree *ui;

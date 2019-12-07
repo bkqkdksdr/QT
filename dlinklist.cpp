@@ -1,7 +1,7 @@
 #include "dlinklist.h"
 #include "ui_dlinklist.h"
 #include "newarrow.h"
-
+#include <QTextStream>
 void sleep(int msec);
 
 const QBrush DLinkList::normalBursh=QBrush(Qt::GlobalColor::darkGray);
@@ -76,7 +76,7 @@ void DLinkList::initUI()
 
     ui->pushButtonDelete->setEnabled(false);
     ui->comboBoxDelete->setEnabled(false);
-    //ui->lineEditDelete->setEnabled(false);
+    ui->saveButton->setEnabled(false);
 
     ui->pushButtonLocate->setEnabled(false);
     ui->comboBoxLocate->setEnabled(false);
@@ -97,6 +97,7 @@ void DLinkList::initUI()
     ui->horizontalSlider->setMinimum(0);
     ui->horizontalSlider->setMaximum(MAX_SLIDER);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBelow);
+    adjustController();
 }
 
 //初始化视图框架
@@ -122,7 +123,8 @@ void DLinkList::adjustController()
     //当经过插入或删除操作后，节点个数可能会改变，需考虑一些操作的合法性
     ui->pushButtonDelete->setEnabled(countNode);
     ui->comboBoxDelete->setEnabled(countNode);
-
+    ui->saveButton->setEnabled(countNode);
+    ui->loadButton->setEnabled(!countNode);
     if(ui->comboBoxDelete->count()!=countNode)
     {
         QStringList qStringList;
@@ -137,9 +139,16 @@ void DLinkList::adjustController()
     }
     if(ui->comboBoxInsert->count()!=countNode+1)
         ui->comboBoxInsert->addItem(QString::number(countNode+1));
+    ui->lineEditInsert->setFont(dataFont);
+    ui->lineEditLocate->setFont(dataFont);
+    ui->lineEditInsert->setPlaceholderText("插入值：Int");
+    ui->lineEditLocate->setPlaceholderText("查找值：Int");
+    ui->lineEditInsert->setValidator(&DLinkList::dataValidator);
+    ui->lineEditLocate->setValidator(&DLinkList::dataValidator);
 
     //ui->lineEditDelete->setText(" ");
     ui->comboBoxLocate->clear();
+
 }
 
 //计算节点的Scene坐标
@@ -332,7 +341,7 @@ void DLinkList::initDLinkList()
     head=new DLNode("头结点", nullptr);
     head->next=head;
     head->prior=head;
-sleep(sleepTime);
+    sleep(sleepTime);
     addDLNodeGraphicsItem(head, getDLNodePos(0));
     adjustDLNodeArrow(head,0);
 }
@@ -344,7 +353,7 @@ void DLinkList::insertDLNode(int pos, QString elem)
     DLNode *pDLNode=head;
 
     head->setNodeStatus(DLinkList::visitedBrush);
-sleep(sleepTime);
+    sleep(sleepTime);
     //找到前驱节点指针
     for(int i=0;i<pos-1;++i)
     {
@@ -394,7 +403,7 @@ void DLinkList::deleteDLNode(int pos, QString &elem)
         pDLNode=pDLNode->next;
         pDLNode->setNodeStatus(DLinkList::visitedBrush);
     }
-sleep(sleepTime);
+    sleep(sleepTime);
     pDeleteNode=pDLNode->next;
     pDLNode->next=pDeleteNode->next;
     elem=pDeleteNode->data;
@@ -427,7 +436,7 @@ bool DLinkList::locateDLNode(int &pos, QString elem)
     DLNode *pDLNode=head;
 
     head->setNodeStatus(DLinkList::visitedBrush);
-sleep(sleepTime);
+    sleep(sleepTime);
     for(pos=1;pDLNode->next!=head&&pDLNode->next->data!=elem;++pos)
     {
         sleep(sleepTime);
@@ -458,7 +467,7 @@ void DLinkList::destroySelf()
         pDLNode->removeAll(scene);       //移除每个节点的图形Item
         delete pDLNode;      //释放内存
     }
-sleep(sleepTime);
+    sleep(sleepTime);
     ////////////
     head->removeAll(scene);     //移除头结点图形Item
     delete head;                //释放内存
@@ -499,6 +508,7 @@ void DLinkList::on_pushButtonClear_clicked()
 {
     destroySelf();
     initUI();
+    adjustController();
 }
 void DLinkList::closeEvent(QCloseEvent *event)
 {
@@ -594,4 +604,64 @@ sleep(sleepTime);
 void DLinkList::on_horizontalSlider_valueChanged(int value)
 {
     sleepTime=MAX_SLEEP_TIME/(value+1);
+}
+
+
+void DLinkList::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\dlinklist.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    int count = countNode;
+    in<< count <<"\n";
+    int number;
+    DLNode *pLNode=head;
+
+    for(int i = 0; i < count; i++)
+    {
+        pLNode = pLNode->next;
+        number = pLNode->data.toInt();
+        in<< number << "\n";
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void DLinkList::on_loadButton_clicked()
+{
+    destroySelf();
+    initDLinkList();
+    ui->pushButtonClear->setEnabled(true);
+    ui->pushButtonInsert->setEnabled(true);
+    ui->pushButtonRandomInsert5->setEnabled(true);
+    ui->comboBoxInsert->setEnabled(true);
+    ui->lineEditInsert->setEnabled(true);
+    ui->pushButtonLocate->setEnabled(true);
+    ui->lineEditLocate->setEnabled(true);
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\dlinklist.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int count;
+    int number;
+    QString temp = QString(readFile.readLine());
+    count = temp.toInt();
+    for(int i = 0; i < count; i++)
+    {
+        temp = QString(readFile.readLine());
+        number = temp.toInt();
+        insertDLNode(countNode+1,QString::number(number));
+        sleep(sleepTime);
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }

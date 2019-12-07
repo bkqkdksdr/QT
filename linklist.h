@@ -39,6 +39,10 @@ private slots:
 
     void on_horizontalSlider_valueChanged(int value);
 
+    void on_saveButton_clicked();
+
+    void on_loadButton_clicked();
+
 private:
     Ui::LinkList *ui;//ui指针
     QGraphicsScene *scene;//视图场景指针

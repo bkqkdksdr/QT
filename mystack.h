@@ -39,6 +39,10 @@ private slots:
     void on_horizontalSlider_valueChanged(int value);       //演示延迟速度按钮
 
     void on_pushButtonClear_clicked();                      //清除按钮
+    void on_saveButton_clicked();
+
+
+    void on_loadButton_clicked();
 
 private:
     Ui::MyStack *ui;                                        //ui指针

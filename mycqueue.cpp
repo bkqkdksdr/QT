@@ -317,14 +317,15 @@ void MyCQueue::insertLNode(int pos, QString elem)
     for(int i=0;i<pos;++i)
     {
         pLNode->setNodeStatus(MyCQueue::normalBursh);
-        pLNode=pLNode->next; 
+        pLNode=pLNode->next;
     }
     pLNode->setNodeStatus(MyCQueue::markBrush);
     scene->removeItem(pLNode->valueText);
     pLNode->setValue(elem);
     pLNode->valueText=scene->addText(elem,MyCQueue::dataFont);
-    pLNode->valueText->setPos(getLNodePos(tail).x(),getLNodePos(tail).y()+SPACING+5);    
+    pLNode->valueText->setPos(getLNodePos(tail).x(),getLNodePos(tail).y()+SPACING+5);
 }
+
 void MyCQueue::inittwelve(int pos, QString elem)
 {
     if(countNode==CQUEUE_MAXSIZE) return;
@@ -348,7 +349,7 @@ void MyCQueue::deleteLNode(int pos, QString &elem)
     for(int i=0;i<pos;++i)
     {
         pLNode->setNodeStatus(MyCQueue::normalBursh);
-        pLNode=pLNode->next;  
+        pLNode=pLNode->next;
     }
     pLNode->setNodeStatus(MyCQueue::deleteBrush);
     scene->removeItem(pLNode->valueText);
@@ -529,4 +530,82 @@ void MyCQueue::on_pushButtonClear_clicked()
 {
     destorySelf();
     initUI();
+}
+
+void MyCQueue::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\mycqueue.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    int count = 11;
+    in<< front << "\n";
+    in << tail << "\n";
+    int number;
+    LNode *pLNode=head;
+    if(pLNode->data == "###") number = -1;
+    else number = pLNode->data.toInt();
+    in<< number << "\n";
+    qDebug() << "sdsd" << endl;
+    for(int i = 0; i < count; i++)
+    {
+        pLNode = pLNode->next;
+        if(pLNode->data == "###") number = -1;
+        else number = pLNode->data.toInt();
+        in<< number << "\n";
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void MyCQueue::on_loadButton_clicked()
+{
+    destorySelf();
+    initMyCQueue();
+    ui->pushButtonClear->setEnabled(true);
+    ui->pushButtonInsert->setEnabled(true);
+    ui->pushButtonRandomInsert5->setEnabled(true);
+    ui->lineEditInsert->setEnabled(true);
+    ui->pushButtonLocate->setEnabled(true);
+    ui->lineEditLocate->setEnabled(true);
+    qDebug()<< " ****" << endl;
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\mycqueue.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int number;
+    QString temp = QString(readFile.readLine());
+    QString elem;
+    front = temp.toInt();
+    temp = QString(readFile.readLine());
+    tail = temp.toInt();
+    size = 0;
+    qDebug()<< front <<" ****" << tail << endl;
+    LNode *pLNode=head;
+    for(int i = 0; i < 12; i++)
+    {
+        temp = QString(readFile.readLine());
+        number = temp.toInt();
+        if(number == -1) elem = "###";
+        else {
+            elem = temp;
+            size++;
+        }
+        scene->removeItem(pLNode->valueText);
+        pLNode->setValue(elem);
+        pLNode->valueText=scene->addText(elem,MyCQueue::dataFont);
+        pLNode->valueText->setPos(getLNodePos(i).x(),getLNodePos(i).y()+SPACING+5);
+        sleep(sleepTime);
+        pLNode=pLNode->next;
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }

@@ -39,6 +39,11 @@ private slots:
 
     void on_horizontalSlider_valueChanged(int value);	//调整演示的速度快慢
 
+
+    void on_saveButton_clicked();
+
+    void on_loadButton_clicked();
+
 protected:
     Ui::DLinkList *ui;              //UI指针
     QGraphicsScene *scene;          //视图场景指针

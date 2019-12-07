@@ -1,4 +1,7 @@
 #include <QDebug>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <math.h>
 #include "linklist.h"
 #include "ui_linklist.h"
@@ -71,7 +74,7 @@ void LinkList::initUI()
 
     ui->pushButtonDelete->setEnabled(false);
     ui->comboBoxDelete->setEnabled(false);
-    //ui->lineEditDelete->setEnabled(false);
+    ui->saveButton->setEnabled(false);
 
     ui->pushButtonLocate->setEnabled(false);
     ui->comboBoxLocate->setEnabled(false);
@@ -92,6 +95,7 @@ void LinkList::initUI()
     ui->horizontalSlider->setMinimum(0);
     ui->horizontalSlider->setMaximum(MAX_SLIDER);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBelow);
+    adjustController();
 }
 //初始化视图框架
 void LinkList::initSceneView()
@@ -114,7 +118,8 @@ void LinkList::adjustController()
     //节点个数可能会改变，需要考虑一些操作的合理性
     ui->pushButtonDelete->setEnabled(countNode);
     ui->comboBoxDelete->setEnabled(countNode);
-
+    ui->saveButton->setEnabled(countNode);
+    ui->loadButton->setEnabled(!countNode);
     if(ui->comboBoxDelete->count()!=countNode)
     {
         QStringList qStringList;
@@ -129,7 +134,12 @@ void LinkList::adjustController()
     }
     if(ui->comboBoxInsert->count()!=countNode+1)
         ui->comboBoxInsert->addItem(QString::number(countNode+1));
-
+    ui->lineEditInsert->setFont(dataFont);
+    ui->lineEditLocate->setFont(dataFont);
+    ui->lineEditInsert->setPlaceholderText("插入值：Int");
+    ui->lineEditLocate->setPlaceholderText("查找值：Int");
+    ui->lineEditInsert->setValidator(&LinkList::dataValidator);
+    ui->lineEditLocate->setValidator(&LinkList::dataValidator);
     ui->comboBoxLocate->clear();
 }
 //计算节点的SCENE坐标
@@ -385,6 +395,7 @@ void LinkList::on_pushButtonClear_clicked()
 {
     destorySelf();
     initUI();
+    adjustController();
 }
 
 void LinkList::closeEvent(QCloseEvent *event)
@@ -455,4 +466,65 @@ void LinkList::on_pushButtonLocate_clicked()
 void LinkList::on_horizontalSlider_valueChanged(int value)
 {
     sleepTime=MAX_SLEEP_TIME/(value+1);
+}
+
+void LinkList::on_saveButton_clicked()
+{
+    QFile writeFile("F:\\Qt\\Documents\\Data_2_0\\resource\\linklist.txt");
+    writeFile.open(QIODevice::Text|QIODevice::WriteOnly);
+    QTextStream in(&writeFile);
+    int count = countNode;
+    in<< count <<"\n";
+    int number;
+    LNode *pLNode=head;
+
+    for(int i = 0; i < count; i++)
+    {
+        pLNode = pLNode->next;
+        number = pLNode->data.toInt();
+        in<< number << "\n";
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Save Success!");
+    //QString data = QString(file.readAll());
+
+    //data.toLatin1().data()
+
+    writeFile.close();
+}
+
+void LinkList::on_loadButton_clicked()
+{
+    destorySelf();
+    initLinkList();
+    ui->pushButtonClear->setEnabled(true);
+    ui->pushButtonInsert->setEnabled(true);
+    ui->pushButtonRandomInsert5->setEnabled(true);
+    ui->comboBoxInsert->setEnabled(true);
+    ui->lineEditInsert->setEnabled(true);
+    ui->pushButtonLocate->setEnabled(true);
+    ui->lineEditLocate->setEnabled(true);
+    qDebug()<< " ****" << endl;
+    QFile readFile("F:\\Qt\\Documents\\Data_2_0\\resource\\linklist.txt");
+    readFile.open(QIODevice::ReadOnly);
+    int count;
+    int number;
+    QString temp = QString(readFile.readLine());
+    count = temp.toInt();
+    qDebug() << count  << " count number" << endl;
+    for(int i = 0; i < count; i++)
+    {
+        temp = QString(readFile.readLine());
+        number = temp.toInt();
+        insertLNode(countNode+1,QString::number(number));
+        sleep(sleepTime);
+    }
+
+    adjustController();
+    ui->lineEditState->setPalette(Qt::GlobalColor::green);
+    ui->lineEditState->setText("Load Success!");
+
+    readFile.close();
 }
